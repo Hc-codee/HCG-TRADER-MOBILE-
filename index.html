@@ -3,85 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#080c10">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>HCG-TRADER V18</title>
+    <title>HCG-TRADER V18 PRO</title>
     <style>
+        :root {
+            --bg-color: #080c10;
+            --panel-bg: #121820;
+            --primary: #00ffcc;
+            --success: #00ff44;
+            --danger: #ff2a2a;
+            --warning: #ffaa00;
+            --text-main: #e0e0e0;
+            --border: #1f2b38;
+        }
         body {
-            background-color: #050505;
-            color: #00ff00;
-            font-family: 'Courier New', Courier, monospace;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
+            background-color: var(--bg-color); color: var(--text-main); font-family: 'Courier New', monospace;
+            margin: 0; padding: 15px; text-align: center;
         }
-        .container {
-            max-width: 500px;
-            margin: auto;
+        h2 { color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 10px; font-size: 1.5em; text-transform: uppercase; letter-spacing: 2px;}
+        .card {
+            background: var(--panel-bg); border: 1px solid var(--border); border-radius: 8px;
+            padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        h2 { border-bottom: 2px solid #333; padding-bottom: 10px; color: #ff0000; }
-        .box { background: #111; border: 1px solid #333; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
         input[type="password"] {
-            width: 90%; padding: 10px; background: #000; border: 1px solid #00ff00; color: #00ff00; margin-bottom: 15px;
+            width: 90%; padding: 12px; background: #000; border: 1px solid var(--primary); color: var(--primary);
+            margin-bottom: 15px; border-radius: 4px; font-family: monospace; text-align: center;
         }
-        button {
-            width: 100%; padding: 15px; font-weight: bold; font-family: 'Courier New'; border: none; cursor: pointer; margin-bottom: 10px; border-radius: 3px;
+        .btn {
+            width: 100%; padding: 15px; font-weight: bold; font-family: 'Courier New', monospace; font-size: 1em;
+            border: none; border-radius: 5px; cursor: pointer; margin-bottom: 12px; text-transform: uppercase;
+            transition: 0.3s;
         }
-        .btn-green { background-color: #006600; color: white; }
-        .btn-blue { background-color: #004488; color: white; }
-        .btn-red { background-color: #880000; color: white; }
-        #status-board { font-size: 1.2em; font-weight: bold; margin: 20px 0; padding: 15px; border: 1px solid #333; }
-        .signal-buy { color: #00ff00; }
-        .signal-wait { color: #ff3333; }
-        #image-preview { max-width: 100%; margin-top: 15px; display: none; border: 1px solid #444; }
-        input[type="file"] { display: none; }
+        .btn:active { transform: scale(0.98); }
+        .btn-green { background: linear-gradient(90deg, #006600, #00aa00); color: white; }
+        .btn-blue { background: linear-gradient(90deg, #003366, #0055aa); color: white; }
+        .btn-red { background: linear-gradient(90deg, #880000, #dd0000); color: white; box-shadow: 0 0 10px rgba(255,0,0,0.3); }
+        .btn-hollow { background: transparent; border: 1px solid var(--text-main); color: var(--text-main); padding: 10px;}
+        
+        .grid-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; text-align: left;
+        }
+        .data-box {
+            background: #0d1218; padding: 10px; border-left: 3px solid var(--primary); border-radius: 4px;
+        }
+        .data-title { font-size: 0.75em; color: #888; text-transform: uppercase; margin-bottom: 5px;}
+        .data-value { font-size: 1.1em; font-weight: bold; }
+        
+        #image-preview { width: 100%; border-radius: 5px; border: 1px solid var(--border); margin-top: 10px; display: none; }
+        .hidden { display: none; }
+        
+        /* تأثير الرادار للتحميل */
+        .scanner {
+            width: 100%; height: 4px; background: var(--primary); margin: 15px 0; border-radius: 2px;
+            animation: scan 1.5s infinite ease-in-out; display: none;
+            box-shadow: 0 0 10px var(--primary);
+        }
+        @keyframes scan { 0% { opacity: 0.2; transform: scaleX(0.1); } 50% { opacity: 1; transform: scaleX(1); } 100% { opacity: 0.2; transform: scaleX(0.1); } }
+        
+        .signal-header { font-size: 2em; margin: 10px 0; font-weight: bold; text-shadow: 0 0 10px rgba(0,0,0,0.5);}
+        .BUY { color: var(--success); } .SELL { color: var(--danger); } .WAIT { color: var(--warning); }
     </style>
 </head>
 <body>
 
-<div class="container" id="setup-screen">
+<div id="setup-screen" class="card">
     <h2>[ SECURITY VAULT ]</h2>
-    <div class="box">
-        <p>Enter Gemini API Key:</p>
-        <input type="password" id="api-key" placeholder="AIzaSy...">
-        <button class="btn-green" onclick="saveKey()">SAVE & INITIALIZE CORE</button>
-    </div>
+    <p style="font-size: 0.8em; color: #888;">System Authentication Required</p>
+    <input type="password" id="api-key" placeholder="Enter Gemini API Key">
+    <button class="btn btn-green" onclick="saveKey()">INITIALIZE SYSTEM</button>
 </div>
 
-<div class="container" id="main-screen" style="display: none;">
-    <h2>[ HCG-TRADER V18 ]</h2>
+<div id="main-screen" class="hidden">
+    <h2>[ HCG-TRADER V18 PRO ]</h2>
     
-    <div id="status-board">[ STANDBY ]</div>
-    
-    <input type="file" id="file-input" accept="image/*" onchange="previewImage(event)">
-    <button class="btn-blue" onclick="document.getElementById('file-input').click()">1. LOAD CHART (رفع الشارت)</button>
-    <button class="btn-red" onclick="executeScan()">2. EXECUTE SCAN (تحليل)</button>
-    <button class="btn-green" onclick="resetApp()" style="background-color: #333; margin-top: 15px;">⚙️ Reset Key</button>
+    <div class="card">
+        <input type="file" id="file-gallery" accept="image/*" class="hidden" onchange="processImage(event)">
+        <input type="file" id="file-camera" accept="image/*" capture="environment" class="hidden" onchange="processImage(event)">
+        
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-blue" onclick="document.getElementById('file-gallery').click()">📁 GALLERY</button>
+            <button class="btn btn-blue" onclick="document.getElementById('file-camera').click()">📷 CAMERA</button>
+        </div>
+        
+        <img id="image-preview" src="" alt="Chart">
+        <button id="btn-scan" class="btn btn-red hidden" onclick="executeScan()">⚡ INITIATE SCAN</button>
+        <div id="loading-scanner" class="scanner"></div>
+        <p id="status-text" style="font-size: 0.9em; color: var(--primary);">[ SYSTEM READY ]</p>
+    </div>
 
-    <img id="image-preview" src="" alt="Chart Preview">
+    <div id="results-panel" class="card hidden">
+        <div id="signal-display" class="signal-header">--</div>
+        <div style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;" id="reasoning-display">Analyzing...</div>
+        
+        <div class="grid-container">
+            <div class="data-box" style="border-color: var(--text-main);"><div class="data-title">Asset / Trend</div><div class="data-value" id="val-asset">--</div></div>
+            <div class="data-box" style="border-color: #00aaff;"><div class="data-title">Entry Point</div><div class="data-value" id="val-entry">--</div></div>
+            <div class="data-box" style="border-color: var(--danger);"><div class="data-title">Stop Loss (SL)</div><div class="data-value" id="val-sl">--</div></div>
+            <div class="data-box" style="border-color: var(--success);"><div class="data-title">Target 1 (TP1)</div><div class="data-value" id="val-tp1">--</div></div>
+            <div class="data-box" style="border-color: var(--success);"><div class="data-title">Target 2 (TP2)</div><div class="data-value" id="val-tp2">--</div></div>
+            <div class="data-box" style="border-color: var(--warning);"><div class="data-title">Spread Status</div><div class="data-value" id="val-spread">--</div></div>
+        </div>
+    </div>
+    
+    <button class="btn btn-hollow" onclick="resetApp()">⚙️ RESET VAULT KEY</button>
 </div>
 
 <script>
-    // النواة العسكرية
+    // النواة العسكرية المطورة للتحليل المالي
     const SYSTEM_PROMPT = `
-    "ROLE": "You are HCG-TRADER V18 Mobile Core. Analyze the chart and extract precise technical data."
-    "TASK": "Read indicators and output trading signal strictly in JSON. No text."
-    "JSON_SCHEMA": {
-      "asset_data": {"symbol": "string", "current_price": "float"},
-      "technical_indicators": {"atr_value": "float", "adx_value": "float", "rsi_value": "float"},
-      "action_plan": {"signal": "BUY or SELL or WAIT", "entry_price": "float", "stop_loss": "float", "take_profit_1": "float"},
-      "system_diagnostics": {"confidence_score": "integer", "veto_warning": "string"}
+    ROLE: You are HCG-TRADER V18 PRO, an elite algorithmic trading AI. Your task is to analyze the provided financial chart and extract highly precise trading variables.
+    RULES: 
+    1. Read indicators carefully (ATR, RSI, ADX, EMAs).
+    2. Assess 'Spread Status' based on current market volatility and time (e.g., 'Normal', 'High Risk', 'News Time').
+    3. Output MUST be ONLY valid JSON format. No conversational text.
+    JSON_SCHEMA: {
+      "asset": "String (e.g., XAUUSD, NAS100)",
+      "trend": "String (Bullish/Bearish/Ranging)",
+      "signal": "BUY or SELL or WAIT",
+      "entry_point": "Float or 'N/A'",
+      "stop_loss": "Float or 'N/A' (Strict calculation based on structure/ATR)",
+      "target_1": "Float or 'N/A'",
+      "target_2": "Float or 'N/A'",
+      "spread_status": "String (Risk evaluation)",
+      "reasoning": "String (Short technical reason for the decision)"
     }
     `;
 
     let base64Image = "";
 
-    // التحقق من وجود المفتاح عند بدء التشغيل
     window.onload = function() {
         if(localStorage.getItem("hcg_api_key")) {
-            document.getElementById("setup-screen").style.display = "none";
-            document.getElementById("main-screen").style.display = "block";
+            document.getElementById("setup-screen").classList.add("hidden");
+            document.getElementById("main-screen").classList.remove("hidden");
         }
     }
 
@@ -89,8 +144,8 @@
         const key = document.getElementById("api-key").value.trim();
         if(key) {
             localStorage.setItem("hcg_api_key", key);
-            document.getElementById("setup-screen").style.display = "none";
-            document.getElementById("main-screen").style.display = "block";
+            document.getElementById("setup-screen").classList.add("hidden");
+            document.getElementById("main-screen").classList.remove("hidden");
         }
     }
 
@@ -99,33 +154,53 @@
         location.reload();
     }
 
-    function previewImage(event) {
+    // محرك ضغط الصور الاحترافي
+    function processImage(event) {
         const file = event.target.files[0];
         if(!file) return;
 
+        document.getElementById('status-text').innerText = "[ COMPRESSING DATA... ]";
+        
         const reader = new FileReader();
-        reader.onload = function() {
-            base64Image = reader.result.split(',')[1]; // استخراج الكود الصافي بدون الهيدر
-            const img = document.getElementById('image-preview');
-            img.src = reader.result;
-            img.style.display = 'block';
-            document.getElementById('status-board').innerText = "[ CHART LOADED ]";
-            document.getElementById('status-board').className = "";
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 1024; // تصغير الصورة لتسريع التحليل
+                const scaleSize = MAX_WIDTH / img.width;
+                canvas.width = MAX_WIDTH;
+                canvas.height = img.height * scaleSize;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                
+                // تحويل الصورة المضغوطة إلى Base64
+                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                base64Image = compressedDataUrl.split(',')[1];
+                
+                const preview = document.getElementById('image-preview');
+                preview.src = compressedDataUrl;
+                preview.style.display = 'block';
+                
+                document.getElementById('btn-scan').classList.remove("hidden");
+                document.getElementById('status-text').innerText = "[ DATA LOADED. READY FOR SCAN ]";
+            }
+            img.src = e.target.result;
         }
         reader.readAsDataURL(file);
     }
 
     async function executeScan() {
-        if(!base64Image) {
-            document.getElementById('status-board').innerText = "[ ERROR: NO CHART SELECTED ]";
-            return;
-        }
+        if(!base64Image) return;
 
         const apiKey = localStorage.getItem("hcg_api_key");
         const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
         
-        document.getElementById('status-board').innerText = "[ SCANNING BATTLEFIELD... ]";
-        document.getElementById('status-board').style.color = "#ffff00";
+        // واجهة التحميل
+        document.getElementById('btn-scan').classList.add("hidden");
+        document.getElementById('loading-scanner').style.display = "block";
+        document.getElementById('status-text').innerText = "[ ANALYZING MARKET STRUCTURE... ]";
+        document.getElementById('results-panel').classList.add("hidden");
 
         const payload = {
             "contents": [{
@@ -143,33 +218,40 @@
                 body: JSON.stringify(payload)
             });
 
-            if(!response.ok) throw new Error("API KEY OR NETWORK ERROR");
+            if(!response.ok) throw new Error("API Authentication or Network Failure");
 
             const data = await response.json();
             let resultText = data.candidates[0].content.parts[0].text;
             
-            // تنظيف الـ JSON
-            resultText = resultText.replace(/```json/g, '').replace(/```/g, '').trim();
+            // تنظيف صارم للـ JSON من أي شوائب ماركداون
+            resultText = resultText.replace(/```json/gi, '').replace(/```/g, '').trim();
             const parsed = JSON.parse(resultText);
 
-            const signal = parsed.action_plan.signal;
-            const sl = parsed.action_plan.stop_loss;
-            const veto = parsed.system_diagnostics.veto_warning;
+            // عرض النتائج في لوحة القيادة
+            document.getElementById('results-panel').classList.remove("hidden");
+            
+            const signalNode = document.getElementById('signal-display');
+            signalNode.innerText = parsed.signal;
+            signalNode.className = "signal-header " + parsed.signal;
 
-            const board = document.getElementById('status-board');
-            if(signal === "WAIT" || signal === "SELL" || signal === "BUY") {
-                if(signal === "WAIT") {
-                    board.innerHTML = `🛑 ${signal} <br> VETO: ${veto}`;
-                    board.style.color = "#ff3333";
-                } else {
-                    board.innerHTML = `🟢 ${signal} <br> Entry: ${parsed.action_plan.entry_price} <br> SL: ${sl}`;
-                    board.style.color = "#00ff00";
-                }
-            }
+            document.getElementById('reasoning-display').innerText = "Reason: " + parsed.reasoning;
+            document.getElementById('val-asset').innerText = parsed.asset + " | " + parsed.trend;
+            document.getElementById('val-entry').innerText = parsed.entry_point;
+            document.getElementById('val-sl').innerText = parsed.stop_loss;
+            document.getElementById('val-tp1').innerText = parsed.target_1;
+            document.getElementById('val-tp2').innerText = parsed.target_2;
+            document.getElementById('val-spread').innerText = parsed.spread_status;
+
+            document.getElementById('status-text').innerText = "[ SCAN COMPLETE ]";
+            document.getElementById('status-text').style.color = "var(--success)";
+
         } catch (error) {
             console.error(error);
-            document.getElementById('status-board').innerText = "[ SYSTEM ERROR / INVALID JSON ]";
-            document.getElementById('status-board').style.color = "#ff3333";
+            document.getElementById('status-text').innerText = "[ FATAL ERROR: INVALID RESPONSE OR NETWORK ]";
+            document.getElementById('status-text').style.color = "var(--danger)";
+        } finally {
+            document.getElementById('loading-scanner').style.display = "none";
+            document.getElementById('btn-scan').classList.remove("hidden");
         }
     }
 </script>
