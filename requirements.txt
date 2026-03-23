@@ -1,0 +1,4 @@
+kivy==2.3.0
+google-generativeai==0.8.3
+pillow==10.3.0
+plyer==2.1.0
