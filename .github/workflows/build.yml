@@ -29,12 +29,11 @@ jobs:
         pip install --upgrade pip
         pip install Cython==0.29.33 buildozer virtualenv
 
-    - name: Initialize and Inject Settings via Python Core
+    - name: Initialize and Inject Settings
       run: |
         source hcg_env/bin/activate
         buildozer init
         
-        # 🔴 استخدام بايثون لإعادة كتابة النواة وإخراس ثرثرة السيرفر
         python -c "
         import re
         with open('buildozer.spec', 'r') as f: data = f.read()
@@ -42,20 +41,19 @@ jobs:
         data = re.sub(r'title = My Application', 'title = HCG TRADER V18', data)
         data = re.sub(r'package.name = myapp', 'package.name = hcgtrader', data)
         data = re.sub(r'package.domain = org.test', 'package.domain = com.emperor.hassan', data)
-        data = re.sub(r'requirements = python3,kivy', 'requirements = python3,kivy==2.3.0,google-generativeai,pillow,plyer', data)
+        # 🔴 التغيير الجوهري: استخدام مكتبة requests خفيفة الوزن بدلاً من مكتبة جوجل الثقيلة
+        data = re.sub(r'requirements = python3,kivy', 'requirements = python3,kivy==2.3.0,requests,urllib3,charset-normalizer,idna,certifi,pillow,plyer', data)
         data = re.sub(r'#? ?android.permissions = .*', 'android.permissions = INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE', data)
         data = re.sub(r'#? ?android.accept_sdk_license = .*', 'android.accept_sdk_license = True', data)
         data = re.sub(r'#? ?android.api = .*', 'android.api = 34', data)
         data = re.sub(r'#? ?android.minapi = .*', 'android.minapi = 24', data)
         data = re.sub(r'#? ?android.build_tools_version = .*', 'android.build_tools_version = 34.0.0', data)
-        
-        # 🔴 كتم الثرثرة لكي يظهر الخطأ الحقيقي بوضوح في حال الفشل
         data = re.sub(r'#? ?log_level = .*', 'log_level = 1', data)
         
         with open('buildozer.spec', 'w') as f: f.write(data)
         "
         
-    - name: Compile APK (The Heavy Lifting)
+    - name: Compile APK (Lightweight Pure Python)
       run: |
         source hcg_env/bin/activate
         buildozer android debug
