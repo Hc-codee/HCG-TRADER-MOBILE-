@@ -29,24 +29,36 @@ jobs:
         pip install --upgrade pip
         pip install Cython==0.29.33 buildozer virtualenv
 
-    - name: Initialize and Inject Settings
+    - name: Initialize and Inject Settings via Python Core
       run: |
         source hcg_env/bin/activate
         buildozer init
-        # الهندسة الآمنة للإعدادات الأساسية
-        sed -i 's/title = My Application/title = HCG TRADER V18/g' buildozer.spec
-        sed -i 's/package.name = myapp/package.name = hcgtrader/g' buildozer.spec
-        sed -i 's/package.domain = org.test/package.domain = com.emperor.hassan/g' buildozer.spec
-        sed -i 's/requirements = python3,kivy/requirements = python3,kivy==2.3.0,google-generativeai,pillow,plyer/g' buildozer.spec
         
-        # 🔴 الكسر الجذري: حقن أوامر التراخيص والصلاحيات في نهاية الملف مباشرة
-        echo "android.accept_sdk_license = True" >> buildozer.spec
-        echo "android.permissions = INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE" >> buildozer.spec
+        # 🔴 استخدام بايثون لإعادة كتابة إعدادات النواة وتجاوز الإصدارات التجريبية
+        python -c "
+        import re
+        with open('buildozer.spec', 'r') as f: data = f.read()
+        
+        data = re.sub(r'title = My Application', 'title = HCG TRADER V18', data)
+        data = re.sub(r'package.name = myapp', 'package.name = hcgtrader', data)
+        data = re.sub(r'package.domain = org.test', 'package.domain = com.emperor.hassan', data)
+        data = re.sub(r'requirements = python3,kivy', 'requirements = python3,kivy==2.3.0,google-generativeai,pillow,plyer', data)
+        data = re.sub(r'#? ?android.permissions = .*', 'android.permissions = INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE', data)
+        
+        # تفعيل التراخيص بشكل إجباري
+        data = re.sub(r'#? ?android.accept_sdk_license = .*', 'android.accept_sdk_license = True', data)
+        
+        # إجبار النظام على استخدام إصدارات مستقرة لقتل الـ rc2
+        data = re.sub(r'#? ?android.api = .*', 'android.api = 34', data)
+        data = re.sub(r'#? ?android.minapi = .*', 'android.minapi = 24', data)
+        data = re.sub(r'#? ?android.build_tools_version = .*', 'android.build_tools_version = 34.0.0', data)
+        
+        with open('buildozer.spec', 'w') as f: f.write(data)
+        "
         
     - name: Compile APK (The Heavy Lifting)
       run: |
         source hcg_env/bin/activate
-        # 🔴 إزالة الـ yes pipe المزعج، الإعدادات المحقونة ستتكفل بالأمر
         buildozer android debug
 
     - name: Upload APK
@@ -54,4 +66,3 @@ jobs:
       with:
         name: HCG-TRADER-V18-APK
         path: bin/*.apk
-        
