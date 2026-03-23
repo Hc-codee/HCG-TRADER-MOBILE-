@@ -1,1 +1,0 @@
-# HCG-TRADER-MOBILE-
