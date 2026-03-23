@@ -1,7 +1,8 @@
 import os
 import json
 import threading
-import google.generativeai as genai
+import base64
+import requests
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
@@ -13,7 +14,7 @@ from kivy.storage.jsonstore import JsonStore
 from kivy.clock import Clock
 from plyer import filechooser
 
-# النواة العسكرية لاستخراج البيانات
+# 🎯 النواة العسكرية لاستخراج البيانات
 SYSTEM_PROMPT = """
 "ROLE": "You are HCG-TRADER V18 Mobile Core. Analyze the chart and extract precise technical data."
 "TASK": "Read indicators and output trading signal strictly in JSON. No text."
@@ -46,7 +47,7 @@ class SetupScreen(Screen):
         key = self.api_input.text.strip()
         if key:
             App.get_running_app().store.put('credentials', api_key=key)
-            App.get_running_app().init_ai(key)
+            App.get_running_app().api_key = key
             self.manager.current = 'main'
 
 class MainScreen(Screen):
@@ -56,7 +57,7 @@ class MainScreen(Screen):
         
         layout = BoxLayout(orientation='vertical', padding=15, spacing=10)
         
-        # شريط التحكم العلوي
+        # شريط التحكم
         top_bar = BoxLayout(orientation='horizontal', size_hint=(1, 0.1))
         self.status_label = Label(text="[ STANDBY ]", color=(0, 1, 0, 1))
         settings_btn = Button(text="⚙️ Key", size_hint=(0.3, 1), background_color=(0.5, 0.5, 0.5, 1))
@@ -100,21 +101,41 @@ class MainScreen(Screen):
             self.status_label.text = "[ NO CHART SELECTED ]"
             return
         
-        self.status_label.text = "[ SCANNING... PLEASE WAIT ]"
-        self.status_label.color = (1, 1, 0, 1) # أصفر للانتظار
-        # تشغيل التحليل في مسار خلفي (Thread) لمنع تجميد الشاشة
+        self.status_label.text = "[ SCANNING BATTLEFIELD... ]"
+        self.status_label.color = (1, 1, 0, 1) # أصفر
         threading.Thread(target=self.analyze_chart_logic).start()
 
     def analyze_chart_logic(self):
         try:
-            import PIL.Image
-            img = PIL.Image.open(self.selected_image_path)
-            model = App.get_running_app().ai_model
-            response = model.generate_content([SYSTEM_PROMPT, img])
+            # 1. تشفير الصورة إلى Base64
+            with open(self.selected_image_path, "rb") as image_file:
+                encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+
+            api_key = App.get_running_app().api_key
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
             
-            # تنظيف الـ JSON المرتجع
-            result_text = response.text.replace('```json', '').replace('```', '')
-            parsed_data = json.loads(result_text)
+            # 2. تجهيز الحمولة (Payload)
+            payload = {
+                "contents": [{
+                    "parts": [
+                        {"text": SYSTEM_PROMPT},
+                        {"inline_data": {"mime_type": "image/jpeg", "data": encoded_string}}
+                    ]
+                }]
+            }
+            headers = {'Content-Type': 'application/json'}
+
+            # 3. إطلاق الرصاصة (REST API Call)
+            response = requests.post(url, headers=headers, json=payload)
+            response.raise_for_status()
+            
+            # 4. تفكيك الرد
+            res_json = response.json()
+            result_text = res_json['candidates'][0]['content']['parts'][0]['text']
+            
+            # تنظيف الـ JSON
+            clean_json = result_text.replace('```json', '').replace('```', '').strip()
+            parsed_data = json.loads(clean_json)
             
             signal = parsed_data['action_plan']['signal']
             sl = parsed_data['action_plan']['stop_loss']
@@ -122,16 +143,18 @@ class MainScreen(Screen):
             
             if signal == "WAIT":
                 final_text = f"🛑 {signal} | VETO: {veto}"
-                color = (1, 0, 0, 1) # أحمر
+                color = (1, 0, 0, 1)
             else:
                 final_text = f"🟢 {signal} | SL: {sl}"
-                color = (0, 1, 0, 1) # أخضر
+                color = (0, 1, 0, 1)
                 
-            # تحديث واجهة المستخدم بأمان من المسار الخلفي
             Clock.schedule_once(lambda dt: self.update_ui(final_text, color))
             
+        except requests.exceptions.HTTPError as err:
+            Clock.schedule_once(lambda dt: self.update_ui("[ API KEY ERROR / NETWORK ]", (1, 0, 0, 1)))
         except Exception as e:
-            Clock.schedule_once(lambda dt: self.update_ui("[ API ERROR / INVALID JSON ]", (1, 0, 0, 1)))
+            Clock.schedule_once(lambda dt: self.update_ui("[ SYSTEM ERROR / INVALID JSON ]", (1, 0, 0, 1)))
+            print(e)
 
     def update_ui(self, text, color):
         self.status_label.text = text
@@ -140,25 +163,19 @@ class MainScreen(Screen):
 class HCGTraderApp(App):
     def build(self):
         self.store = JsonStore('hcg_vault.json')
-        self.ai_model = None
+        self.api_key = None
         
         sm = ScreenManager()
         sm.add_widget(SetupScreen(name='setup'))
         sm.add_widget(MainScreen(name='main'))
         
-        # التحقق مما إذا كان المفتاح موجوداً مسبقاً
         if self.store.exists('credentials'):
-            key = self.store.get('credentials')['api_key']
-            self.init_ai(key)
+            self.api_key = self.store.get('credentials')['api_key']
             sm.current = 'main'
         else:
             sm.current = 'setup'
             
         return sm
-
-    def init_ai(self, key):
-        genai.configure(api_key=key)
-        self.ai_model = genai.GenerativeModel('gemini-1.5-flash')
 
 if __name__ == '__main__':
     HCGTraderApp().run()
