@@ -6,33 +6,48 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # 🔴 تكتيك التراجع لسيرفر أكثر استقراراً
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4  # تم التحديث إلى الإصدار 4
+      uses: actions/checkout@v4
 
     - name: Setup Python
-      uses: actions/setup-python@v4  # تم التحديث إلى الإصدار 4
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
-
-    - name: Initialize Buildozer and Inject Settings
+    - name: Install System Dependencies
       run: |
+        sudo apt-get update
+        sudo apt-get install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+
+    - name: Create Virtual Environment & Install Buildozer
+      run: |
+        python -m venv hcg_env
+        source hcg_env/bin/activate
+        pip install --upgrade pip
+        pip install Cython==0.29.33 buildozer virtualenv  # 🔴 تثبيت نسخة Cython المتوافقة حصراً
+
+    - name: Initialize and Inject Settings
+      run: |
+        source hcg_env/bin/activate
         buildozer init
-        # حقن الإعدادات آلياً
+        # هندسة ملف الإعدادات
         sed -i 's/title = My Application/title = HCG TRADER V18/g' buildozer.spec
         sed -i 's/package.name = myapp/package.name = hcgtrader/g' buildozer.spec
         sed -i 's/package.domain = org.test/package.domain = com.emperor.hassan/g' buildozer.spec
-        sed -i 's/requirements = python3,kivy/requirements = python3,kivy,google-generativeai,pillow,plyer/g' buildozer.spec
+        sed -i 's/requirements = python3,kivy/requirements = python3,kivy==2.3.0,google-generativeai,pillow,plyer/g' buildozer.spec
         sed -i 's/# android.permissions = INTERNET/android.permissions = INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE/g' buildozer.spec
         
-    - name: Compile APK
-      run: buildozer android debug
+    - name: Compile APK (The Heavy Lifting)
+      run: |
+        source hcg_env/bin/activate
+        buildozer android debug
 
     - name: Upload APK
-      uses: actions/upload-artifact@v4  # تم التحديث إلى الإصدار 4 لحل الخطأ
+      uses: actions/upload-artifact@v4
       with:
         name: HCG-TRADER-V18-APK
         path: bin/*.apk
+        
