@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>HCG-TRADER V18</title>
+    <style>
+        body {
+            background-color: #050505;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+        }
+        h2 { border-bottom: 2px solid #333; padding-bottom: 10px; color: #ff0000; }
+        .box { background: #111; border: 1px solid #333; padding: 15px; margin-bottom: 20px; border-radius: 5px; }
+        input[type="password"] {
+            width: 90%; padding: 10px; background: #000; border: 1px solid #00ff00; color: #00ff00; margin-bottom: 15px;
+        }
+        button {
+            width: 100%; padding: 15px; font-weight: bold; font-family: 'Courier New'; border: none; cursor: pointer; margin-bottom: 10px; border-radius: 3px;
+        }
+        .btn-green { background-color: #006600; color: white; }
+        .btn-blue { background-color: #004488; color: white; }
+        .btn-red { background-color: #880000; color: white; }
+        #status-board { font-size: 1.2em; font-weight: bold; margin: 20px 0; padding: 15px; border: 1px solid #333; }
+        .signal-buy { color: #00ff00; }
+        .signal-wait { color: #ff3333; }
+        #image-preview { max-width: 100%; margin-top: 15px; display: none; border: 1px solid #444; }
+        input[type="file"] { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="setup-screen">
+    <h2>[ SECURITY VAULT ]</h2>
+    <div class="box">
+        <p>Enter Gemini API Key:</p>
+        <input type="password" id="api-key" placeholder="AIzaSy...">
+        <button class="btn-green" onclick="saveKey()">SAVE & INITIALIZE CORE</button>
+    </div>
+</div>
+
+<div class="container" id="main-screen" style="display: none;">
+    <h2>[ HCG-TRADER V18 ]</h2>
+    
+    <div id="status-board">[ STANDBY ]</div>
+    
+    <input type="file" id="file-input" accept="image/*" onchange="previewImage(event)">
+    <button class="btn-blue" onclick="document.getElementById('file-input').click()">1. LOAD CHART (رفع الشارت)</button>
+    <button class="btn-red" onclick="executeScan()">2. EXECUTE SCAN (تحليل)</button>
+    <button class="btn-green" onclick="resetApp()" style="background-color: #333; margin-top: 15px;">⚙️ Reset Key</button>
+
+    <img id="image-preview" src="" alt="Chart Preview">
+</div>
+
+<script>
+    // النواة العسكرية
+    const SYSTEM_PROMPT = `
+    "ROLE": "You are HCG-TRADER V18 Mobile Core. Analyze the chart and extract precise technical data."
+    "TASK": "Read indicators and output trading signal strictly in JSON. No text."
+    "JSON_SCHEMA": {
+      "asset_data": {"symbol": "string", "current_price": "float"},
+      "technical_indicators": {"atr_value": "float", "adx_value": "float", "rsi_value": "float"},
+      "action_plan": {"signal": "BUY or SELL or WAIT", "entry_price": "float", "stop_loss": "float", "take_profit_1": "float"},
+      "system_diagnostics": {"confidence_score": "integer", "veto_warning": "string"}
+    }
+    `;
+
+    let base64Image = "";
+
+    // التحقق من وجود المفتاح عند بدء التشغيل
+    window.onload = function() {
+        if(localStorage.getItem("hcg_api_key")) {
+            document.getElementById("setup-screen").style.display = "none";
+            document.getElementById("main-screen").style.display = "block";
+        }
+    }
+
+    function saveKey() {
+        const key = document.getElementById("api-key").value.trim();
+        if(key) {
+            localStorage.setItem("hcg_api_key", key);
+            document.getElementById("setup-screen").style.display = "none";
+            document.getElementById("main-screen").style.display = "block";
+        }
+    }
+
+    function resetApp() {
+        localStorage.removeItem("hcg_api_key");
+        location.reload();
+    }
+
+    function previewImage(event) {
+        const file = event.target.files[0];
+        if(!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function() {
+            base64Image = reader.result.split(',')[1]; // استخراج الكود الصافي بدون الهيدر
+            const img = document.getElementById('image-preview');
+            img.src = reader.result;
+            img.style.display = 'block';
+            document.getElementById('status-board').innerText = "[ CHART LOADED ]";
+            document.getElementById('status-board').className = "";
+        }
+        reader.readAsDataURL(file);
+    }
+
+    async function executeScan() {
+        if(!base64Image) {
+            document.getElementById('status-board').innerText = "[ ERROR: NO CHART SELECTED ]";
+            return;
+        }
+
+        const apiKey = localStorage.getItem("hcg_api_key");
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+        
+        document.getElementById('status-board').innerText = "[ SCANNING BATTLEFIELD... ]";
+        document.getElementById('status-board').style.color = "#ffff00";
+
+        const payload = {
+            "contents": [{
+                "parts": [
+                    {"text": SYSTEM_PROMPT},
+                    {"inline_data": {"mime_type": "image/jpeg", "data": base64Image}}
+                ]
+            }]
+        };
+
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if(!response.ok) throw new Error("API KEY OR NETWORK ERROR");
+
+            const data = await response.json();
+            let resultText = data.candidates[0].content.parts[0].text;
+            
+            // تنظيف الـ JSON
+            resultText = resultText.replace(/```json/g, '').replace(/```/g, '').trim();
+            const parsed = JSON.parse(resultText);
+
+            const signal = parsed.action_plan.signal;
+            const sl = parsed.action_plan.stop_loss;
+            const veto = parsed.system_diagnostics.veto_warning;
+
+            const board = document.getElementById('status-board');
+            if(signal === "WAIT" || signal === "SELL" || signal === "BUY") {
+                if(signal === "WAIT") {
+                    board.innerHTML = `🛑 ${signal} <br> VETO: ${veto}`;
+                    board.style.color = "#ff3333";
+                } else {
+                    board.innerHTML = `🟢 ${signal} <br> Entry: ${parsed.action_plan.entry_price} <br> SL: ${sl}`;
+                    board.style.color = "#00ff00";
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            document.getElementById('status-board').innerText = "[ SYSTEM ERROR / INVALID JSON ]";
+            document.getElementById('status-board').style.color = "#ff3333";
+        }
+    }
+</script>
+
+</body>
+</html>
