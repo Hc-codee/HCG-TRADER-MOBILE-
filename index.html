@@ -1,72 +1,248 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#080c10">
-    <title>HCG-TRADER V18.5 TITAN</title>
+    <title>HCG-TRADER V18.5 TITAN - الإمبراطورية</title>
     <style>
         :root {
-            --bg-color: #05080a; --panel-bg: #10161d; --primary: #00ffcc;
-            --success: #00ff44; --danger: #ff2a2a; --warning: #ffaa00;
-            --text-main: #e0e0e0; --border: #1f2b38; --purple: #aa00ff;
+            --bg-color: #05080a;
+            --panel-bg: #10161d;
+            --primary: #ffd700;
+            --primary-glow: rgba(255, 215, 0, 0.3);
+            --success: #00ff88;
+            --danger: #ff4444;
+            --warning: #ffaa00;
+            --text-main: #e0e0e0;
+            --border: #2a2f3a;
+            --gold: #d4af37;
         }
-        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Courier New', monospace; margin: 0; padding: 10px; text-align: center; }
-        h2 { color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 10px; font-size: 1.3em; letter-spacing: 1px;}
-        .card { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 6px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.6); }
-        input[type="password"] { width: 90%; padding: 10px; background: #000; border: 1px solid var(--primary); color: var(--primary); margin-bottom: 10px; text-align: center; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', 'Cairo', 'Courier New', monospace;
+            margin: 0;
+            padding: 15px;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+        }
+        h2 {
+            color: var(--gold);
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 10px;
+            font-size: 1.4em;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            background: #0a0e14;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            text-align: center;
+        }
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
         
         /* Buttons */
-        .btn { width: 100%; padding: 12px; font-weight: bold; font-family: 'Courier New', monospace; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 10px; text-transform: uppercase; transition: 0.2s; }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            font-weight: bold;
+            font-family: inherit;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
         .btn:active { transform: scale(0.98); }
-        .btn-green { background: linear-gradient(90deg, #005500, #008800); color: white; border: 1px solid #00ff44;}
-        .btn-blue { background: linear-gradient(90deg, #002244, #004488); color: white; border: 1px solid #00aaff;}
-        .btn-red { background: linear-gradient(90deg, #660000, #aa0000); color: white; border: 1px solid #ff2a2a; animation: pulse 2s infinite; }
-        .btn-hollow { background: transparent; border: 1px solid #555; color: #aaa; padding: 8px;}
+        .btn-green { background: linear-gradient(135deg, #1a5a1a, #2a8a2a); color: white; border: 1px solid var(--success); }
+        .btn-blue { background: linear-gradient(135deg, #1a3a5a, #2a5a8a); color: white; border: 1px solid #4a9eff; }
+        .btn-red { background: linear-gradient(135deg, #8a1a1a, #aa2a2a); color: white; border: 1px solid var(--danger); animation: pulse 2s infinite; }
+        .btn-gold { background: linear-gradient(135deg, #b8860b, #d4af37); color: #0a0c0f; font-weight: bold; border: none; }
+        .btn-hollow { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 10px; }
         
-        /* Circuit Breaker Stats */
-        .stats-bar { display: flex; justify-content: space-between; background: #000; padding: 10px; border-radius: 4px; border: 1px solid #333; margin-bottom: 15px; font-weight: bold;}
-        .win-text { color: var(--success); } .loss-text { color: var(--danger); }
-        .circuit-locked { border: 2px solid var(--danger) !important; background: #2a0000 !important; }
+        /* News Alert */
+        .news-alert {
+            background: linear-gradient(135deg, #2a1a0a, #3a2a1a);
+            border: 2px solid var(--warning);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            animation: pulse-warning 1.5s infinite;
+        }
+        @keyframes pulse-warning {
+            0% { box-shadow: 0 0 0 0 rgba(255, 170, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 170, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 170, 0, 0); }
+        }
+        .news-title { font-size: 18px; font-weight: bold; color: var(--warning); }
+        .news-countdown { font-size: 24px; font-weight: bold; font-family: monospace; color: var(--danger); }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #0a0e14;
+            padding: 12px 20px;
+            border-radius: 40px;
+            border: 1px solid var(--gold);
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .win-text { color: var(--success); }
+        .loss-text { color: var(--danger); }
+        .circuit-locked { border: 2px solid var(--danger) !important; background: #2a0a0a !important; }
         
         /* Tabs */
-        .tab-container { display: flex; margin-bottom: 15px; gap: 5px; }
-        .tab { flex: 1; padding: 10px; background: #0a0e14; border: 1px solid var(--border); color: #888; cursor: pointer; font-weight: bold; border-radius: 4px;}
-        .tab.active { background: var(--primary); color: #000; border-color: var(--primary); }
-
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        .tab {
+            flex: 1;
+            padding: 12px;
+            background: #0a0e14;
+            border: 1px solid var(--border);
+            color: #888;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 40px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .tab.active {
+            background: linear-gradient(135deg, var(--gold), #b8860b);
+            color: #000;
+            border-color: var(--gold);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        
         /* Grid */
-        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: left; }
-        .data-box { background: #080b0f; padding: 10px; border-left: 3px solid var(--primary); border-radius: 3px; }
-        .data-title { font-size: 0.65em; color: #888; text-transform: uppercase; margin-bottom: 4px;}
-        .data-value { font-size: 1em; font-weight: bold; }
-
-        #image-preview { width: 100%; border-radius: 4px; border: 1px solid var(--border); margin-top: 10px; display: none; }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        .data-box {
+            background: #0a0e14;
+            padding: 12px;
+            border-left: 3px solid var(--gold);
+            border-radius: 8px;
+        }
+        .data-title {
+            font-size: 0.7em;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .data-value {
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        #image-preview {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--gold);
+            margin: 15px 0;
+            display: none;
+        }
         .hidden { display: none !important; }
         
-        .scanner { width: 100%; height: 3px; background: var(--primary); margin: 10px 0; border-radius: 2px; animation: scan 1s infinite ease-in-out; display: none; box-shadow: 0 0 10px var(--primary); }
-        @keyframes scan { 0% { transform: scaleX(0.1); opacity: 0.3;} 50% { transform: scaleX(1); opacity: 1;} 100% { transform: scaleX(0.1); opacity: 0.3;} }
-        @keyframes pulse { 0% { box-shadow: 0 0 5px rgba(255,0,0,0.2); } 50% { box-shadow: 0 0 15px rgba(255,0,0,0.8); } 100% { box-shadow: 0 0 5px rgba(255,0,0,0.2); } }
+        .scanner {
+            width: 100%;
+            height: 3px;
+            background: var(--gold);
+            margin: 15px 0;
+            border-radius: 2px;
+            animation: scan 1s infinite ease-in-out;
+            display: none;
+            box-shadow: 0 0 10px var(--gold);
+        }
+        @keyframes scan {
+            0% { transform: scaleX(0.1); opacity: 0.3; }
+            50% { transform: scaleX(1); opacity: 1; }
+            100% { transform: scaleX(0.1); opacity: 0.3; }
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px rgba(255,0,0,0.2); }
+            50% { box-shadow: 0 0 20px rgba(255,0,0,0.6); }
+            100% { box-shadow: 0 0 5px rgba(255,0,0,0.2); }
+        }
         
-        .signal-header { font-size: 1.8em; margin: 10px 0; font-weight: bold; }
-        .HOLD { color: var(--warning); } .MOVE_BE { color: var(--primary); } .CLOSE_NOW { color: var(--danger); }
-        .BUY { color: var(--success); } .SELL { color: var(--danger); } .WAIT { color: var(--warning); }
+        .signal-header {
+            font-size: 2em;
+            margin: 10px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+        .BUY { color: var(--success); text-shadow: 0 0 10px rgba(0,255,136,0.3); }
+        .SELL { color: var(--danger); text-shadow: 0 0 10px rgba(255,68,68,0.3); }
+        .WAIT { color: var(--warning); text-shadow: 0 0 10px rgba(255,170,0,0.3); }
+        .HOLD { color: var(--success); }
+        .MOVE_BE { color: var(--warning); }
+        .CLOSE_NOW { color: var(--danger); }
+        
+        .status-online { color: var(--success); }
+        .status-warning { color: var(--warning); }
+        .status-danger { color: var(--danger); }
     </style>
 </head>
 <body>
 
-<div id="setup-screen" class="card">
-    <h2>[ SECURITY VAULT ]</h2>
-    <input type="password" id="api-key" placeholder="Enter Gemini API Key">
-    <button class="btn btn-green" onclick="saveKey()">INITIALIZE V18.5</button>
+<div id="setup-screen" class="card" style="max-width: 400px; margin: 50px auto;">
+    <h2 style="text-align: center;">🔐 HCG-TRADER TITAN</h2>
+    <p style="text-align: center; color: #888; margin-bottom: 20px;">أدخل مفتاح Gemini API للبدء</p>
+    <input type="password" id="api-key" placeholder="أدخل مفتاح API">
+    <button class="btn btn-gold" onclick="saveKey()">🚀 تشغيل الإمبراطورية</button>
 </div>
 
 <div id="main-screen" class="hidden">
-    <h2>[ HCG-TRADER V18.5 TITAN ]</h2>
+    <h2 style="text-align: center;">👑 HCG-TRADER V18.5 TITAN</h2>
+    
+    <!-- News Alert Section -->
+    <div id="news-alert" class="news-alert hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="news-title">📰 أخبار هامة</span>
+            <span id="news-countdown" class="news-countdown">--:--:--</span>
+        </div>
+        <div id="news-details" style="margin-top: 10px; font-size: 14px;"></div>
+        <div id="news-warning" style="margin-top: 10px; color: var(--danger); font-weight: bold;"></div>
+    </div>
     
     <div class="stats-bar" id="stats-bar">
-        <span>DAILY PNL:</span>
-        <span class="win-text">🟢 W: <span id="win-count">0</span></span>
-        <span class="loss-text">🔴 L: <span id="loss-count">0</span></span>
+        <span>📊 الأداء اليومي:</span>
+        <span class="win-text">🟢 فوز: <span id="win-count">0</span></span>
+        <span class="loss-text">🔴 خسارة: <span id="loss-count">0</span></span>
+        <span>🎯 نسبة النجاح: <span id="win-rate">0</span>%</span>
     </div>
 
     <div class="tab-container">
@@ -78,106 +254,263 @@
         <input type="file" id="file-gallery" accept="image/*" class="hidden" onchange="processImage(event)">
         <input type="file" id="file-camera" accept="image/*" capture="environment" class="hidden" onchange="processImage(event)">
         
-        <div style="display: flex; gap: 10px;">
-            <button class="btn btn-blue" onclick="document.getElementById('file-gallery').click()">📁 GALLERY</button>
-            <button class="btn btn-blue" onclick="document.getElementById('file-camera').click()">📷 CAMERA</button>
+        <div style="display: flex; gap: 15px;">
+            <button class="btn btn-blue" onclick="document.getElementById('file-gallery').click()">📁 المعرض</button>
+            <button class="btn btn-blue" onclick="document.getElementById('file-camera').click()">📷 الكاميرا</button>
         </div>
         
         <img id="image-preview" src="">
-        <button id="btn-scan" class="btn btn-red hidden" onclick="executeScan()">⚡ INITIATE SCAN</button>
+        <button id="btn-scan" class="btn btn-gold hidden" onclick="executeScan()">⚡ تحليل الشارت</button>
         <div id="loading-scanner" class="scanner"></div>
-        <p id="status-text" style="font-size: 0.85em; color: #888;">[ WAITING FOR CHART DATA ]</p>
+        <p id="status-text" style="font-size: 0.85em; color: #888; text-align: center;">[ ⏳ انتظار رفع الصورة ]</p>
     </div>
 
+    <!-- Hunting Mode Results -->
     <div id="results-hunt" class="card hidden">
         <div id="hunt-signal" class="signal-header">--</div>
-        <div style="font-size: 0.8em; color: #aaa; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 10px;" id="hunt-reason">Analyzing...</div>
+        <div style="font-size: 0.85em; color: #aaa; text-align: center; border-bottom: 1px solid #333; padding-bottom: 10px;" id="hunt-reason">تحليل...</div>
         
         <div class="grid-container">
-            <div class="data-box"><div class="data-title">Asset/Trend</div><div class="data-value" id="hunt-asset">--</div></div>
-            <div class="data-box"><div class="data-title">Quality Score</div><div class="data-value" id="hunt-conf">--</div></div>
-            <div class="data-box"><div class="data-title">Entry Point</div><div class="data-value" id="hunt-entry">--</div></div>
-            <div class="data-box" style="border-color: var(--danger);"><div class="data-title">Stop Loss</div><div class="data-value" id="hunt-sl">--</div></div>
-            <div class="data-box" style="border-color: var(--warning); grid-column: span 2;"><div class="data-title">Smart Money Trap Zones</div><div class="data-value" id="hunt-traps" style="font-size: 0.85em;">--</div></div>
+            <div class="data-box"><div class="data-title">الزوج / الاتجاه</div><div class="data-value" id="hunt-asset">--</div></div>
+            <div class="data-box"><div class="data-title">نسبة الثقة</div><div class="data-value" id="hunt-conf">--</div></div>
+            <div class="data-box"><div class="data-title">نقطة الدخول</div><div class="data-value" id="hunt-entry">--</div></div>
+            <div class="data-box" style="border-left-color: var(--danger);"><div class="data-title">وقف الخسارة</div><div class="data-value" id="hunt-sl">--</div></div>
+            <div class="data-box" style="grid-column: span 2;"><div class="data-title">🎯 مناطق الصيد الذكية</div><div class="data-value" id="hunt-traps" style="font-size: 0.85em;">--</div></div>
         </div>
         
-        <div style="display: flex; gap: 10px; margin-top: 15px;">
-            <button class="btn btn-green" onclick="logTrade('WIN')">LOG WIN 🟢</button>
-            <button class="btn btn-red" style="animation: none;" onclick="logTrade('LOSS')">LOG LOSS 🔴</button>
+        <div style="display: flex; gap: 15px; margin-top: 15px;">
+            <button class="btn btn-green" onclick="logTrade('WIN')">✅ تسجيل ربح</button>
+            <button class="btn btn-red" style="animation: none;" onclick="logTrade('LOSS')">❌ تسجيل خسارة</button>
         </div>
     </div>
 
+    <!-- Live Manage Results -->
     <div id="results-manage" class="card hidden">
         <div id="manage-action" class="signal-header">--</div>
-        <div style="font-size: 0.8em; color: #aaa; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 10px;" id="manage-reason">Analyzing...</div>
+        <div style="font-size: 0.85em; color: #aaa; text-align: center; border-bottom: 1px solid #333; padding-bottom: 10px;" id="manage-reason">تحليل...</div>
         
         <div class="grid-container">
-            <div class="data-box"><div class="data-title">Current Status</div><div class="data-value" id="manage-status">--</div></div>
-            <div class="data-box"><div class="data-title">Risk Level</div><div class="data-value" id="manage-risk">--</div></div>
-            <div class="data-box" style="border-color: var(--primary); grid-column: span 2;"><div class="data-title">Suggested Stop Loss (New SL)</div><div class="data-value" id="manage-new-sl">--</div></div>
+            <div class="data-box"><div class="data-title">حالة الصفقة</div><div class="data-value" id="manage-status">--</div></div>
+            <div class="data-box"><div class="data-title">مستوى المخاطرة</div><div class="data-value" id="manage-risk">--</div></div>
+            <div class="data-box" style="grid-column: span 2;"><div class="data-title">وقف الخسارة المقترح</div><div class="data-value" id="manage-new-sl">--</div></div>
         </div>
 
-        <div style="display: flex; gap: 10px; margin-top: 15px;">
-            <button class="btn btn-green" onclick="logTrade('WIN')">CLOSED WIN 🟢</button>
-            <button class="btn btn-red" style="animation: none;" onclick="logTrade('LOSS')">CLOSED LOSS 🔴</button>
+        <div style="display: flex; gap: 15px; margin-top: 15px;">
+            <button class="btn btn-green" onclick="logTrade('WIN')">✅ إغلاق ربح</button>
+            <button class="btn btn-red" style="animation: none;" onclick="logTrade('LOSS')">❌ إغلاق خسارة</button>
         </div>
     </div>
     
-    <button class="btn btn-hollow" style="margin-top: 20px;" onclick="resetApp()">⚙️ RESET SYSTEM</button>
+    <button class="btn btn-hollow" style="margin-top: 10px;" onclick="resetApp()">⚙️ إعادة ضبط النظام</button>
 </div>
 
 <script>
-    const PROMPT_HUNT = `
-    ROLE: You are HCG-TRADER V18.5 TITAN. You only execute high-probability setups.
-    RULES: 
-    1. STRICT CONFLUENCE: Do not signal BUY/SELL unless there is a clear SMC zone, Price Action (Pin bar/Engulfing), and Momentum (ADX/MFI) alignment. Otherwise, signal WAIT.
-    2. Output ONLY valid JSON.
-    SCHEMA: {
-      "asset": "String (e.g. GOLD/NAS100)",
-      "trend": "String",
-      "signal": "BUY or SELL or WAIT",
-      "confidence_score": "Integer (0-100)",
-      "entry_point": "Float or 'N/A'",
-      "stop_loss": "Float or 'N/A'",
-      "trap_zones": "String (Exact SMC trap levels)",
-      "reasoning": "String (Technical reason based on ADX/MFI/Price Action)"
-    }
-    `;
+    // ==================== CONFIGURATION ====================
+    const GEMINI_API_KEY = localStorage.getItem("hcg_api_key") || "";
+    
+    // ==================== NEWS DATA (Forex Factory Style) ====================
+    const ECONOMIC_CALENDAR = [
+        { date: "2026-03-25", time: "14:30", currency: "USD", impact: "HIGH", title: "CPI (مؤشر أسعار المستهلكين)", forecast: "3.1%", previous: "3.0%" },
+        { date: "2026-03-26", time: "12:00", currency: "EUR", impact: "HIGH", title: "قرار الفائدة الأوروبي", forecast: "4.00%", previous: "3.75%" },
+        { date: "2026-03-26", time: "14:30", currency: "USD", impact: "MEDIUM", title: "طلبات الإعانة", forecast: "220K", previous: "218K" },
+        { date: "2026-03-27", time: "08:30", currency: "GBP", impact: "HIGH", title: "الناتج المحلي الإجمالي", forecast: "0.3%", previous: "0.2%" },
+        { date: "2026-03-27", time: "14:30", currency: "USD", impact: "HIGH", title: "PCE (الإنفاق الشخصي)", forecast: "2.8%", previous: "2.7%" },
+        { date: "2026-03-28", time: "10:00", currency: "EUR", impact: "MEDIUM", title: "ثقة المستهلك", forecast: "-15", previous: "-16" },
+        { date: "2026-03-28", time: "15:00", currency: "USD", impact: "LOW", title: "مبيعات المنازل", forecast: "4.1M", previous: "4.0M" }
+    ];
+    
+    // ==================== PROMPTS ====================
+    const PROMPT_HUNT = `أنت HCG-TRADER V18.5 TITAN، محلل فني خبير.
+القواعد:
+1. لا تقدم إشارة BUY أو SELL إلا إذا كان هناك توافق بين التحليل الفني (SMC zones، Price Action، ADX/MFI).
+2. إذا لم تتوفر الشروط، أعد WAIT.
+3. أعد الإجابة بصيغة JSON فقط.
+المخطط المطلوب:
+{
+  "asset": "الزوج",
+  "trend": "الاتجاه",
+  "signal": "BUY/SELL/WAIT",
+  "confidence_score": 0-100,
+  "entry_point": "سعر الدخول",
+  "stop_loss": "وقف الخسارة",
+  "trap_zones": "مناطق الصيد",
+  "reasoning": "التحليل"
+}`;
 
-    const PROMPT_MANAGE = `
-    ROLE: You are HCG-TRADER V18.5 TITAN Live Trade Manager.
-    TASK: Analyze the uploaded chart which has an ACTIVE trade running (look for Entry line, SL, TP).
-    RULES:
-    1. Estimate if the trade is in Floating Profit or Drawdown based on current price vs entry line.
-    2. Decide the strict action: HOLD (Let it run), MOVE_BE (Move SL to Entry), CLOSE_NOW (High risk of reversal).
-    3. Output ONLY valid JSON.
-    SCHEMA: {
-      "trade_status": "String (Floating Profit / Drawdown / B.E)",
-      "action": "HOLD or MOVE_BE or CLOSE_NOW",
-      "risk_level": "High / Medium / Low",
-      "new_sl": "Float or 'Keep Current' or 'Move to Entry X'",
-      "reasoning": "String (Frank technical reason for the action based on live momentum)"
-    }
-    `;
+    const PROMPT_MANAGE = `أنت HCG-TRADER V18.5 TITAN، مدير الصفقات.
+حلل الصورة التي تحتوي على صفقة مفتوحة (ابحث عن خط الدخول، وقف الخسارة، الأهداف).
+حدد الإجراء المناسب: HOLD (استمرار)، MOVE_BE (نقل وقف الخسارة إلى نقطة الدخول)، CLOSE_NOW (إغلاق فوري).
+أعد JSON فقط:
+{
+  "trade_status": "Floating Profit/Drawdown/B.E",
+  "action": "HOLD/MOVE_BE/CLOSE_NOW",
+  "risk_level": "High/Medium/Low",
+  "new_sl": "السعر الجديد لوقف الخسارة",
+  "reasoning": "التحليل"
+}`;
 
+    // ==================== GLOBAL VARIABLES ====================
     let base64Image = "";
     let currentMode = "HUNT";
     let stats = { wins: 0, losses: 0, date: new Date().toDateString() };
+    let newsInterval = null;
+    let activeNews = null;
+    let tradingBlocked = false;
 
+    // ==================== INITIALIZATION ====================
     window.onload = function() {
         if(localStorage.getItem("hcg_api_key")) {
             document.getElementById("setup-screen").classList.add("hidden");
             document.getElementById("main-screen").classList.remove("hidden");
             loadStats();
+            startNewsMonitor();
         }
     }
 
     function saveKey() {
         const key = document.getElementById("api-key").value.trim();
-        if(key) { localStorage.setItem("hcg_api_key", key); location.reload(); }
+        if(key) { 
+            localStorage.setItem("hcg_api_key", key); 
+            location.reload(); 
+        }
     }
-    function resetApp() { localStorage.removeItem("hcg_api_key"); location.reload(); }
+    
+    function resetApp() { 
+        localStorage.removeItem("hcg_api_key"); 
+        localStorage.removeItem("hcg_stats");
+        location.reload(); 
+    }
 
+    // ==================== NEWS MONITOR ====================
+    function startNewsMonitor() {
+        checkNews();
+        newsInterval = setInterval(checkNews, 60000); // كل دقيقة
+    }
+    
+    function checkNews() {
+        const now = new Date();
+        const today = now.toISOString().split('T')[0];
+        const currentHour = now.getHours();
+        const currentMinute = now.getMinutes();
+        const currentTime = `${currentHour.toString().padStart(2,'0')}:${currentMinute.toString().padStart(2,'0')}`;
+        
+        // البحث عن أخبار اليوم
+        let upcomingNews = null;
+        let timeToNews = Infinity;
+        
+        for(const news of ECONOMIC_CALENDAR) {
+            if(news.date === today && news.time > currentTime) {
+                const [nh, nm] = news.time.split(':');
+                const newsMinutes = parseInt(nh)*60 + parseInt(nm);
+                const nowMinutes = currentHour*60 + currentMinute;
+                const diff = newsMinutes - nowMinutes;
+                if(diff < timeToNews && diff >= 0) {
+                    timeToNews = diff;
+                    upcomingNews = news;
+                }
+            }
+        }
+        
+        if(upcomingNews && timeToNews <= 60) { // خلال الساعة القادمة
+            activeNews = upcomingNews;
+            tradingBlocked = true;
+            showNewsAlert(upcomingNews, timeToNews);
+        } else if(activeNews && timeToNews > 60) {
+            activeNews = null;
+            tradingBlocked = false;
+            document.getElementById("news-alert").classList.add("hidden");
+        }
+    }
+    
+    function showNewsAlert(news, minutesLeft) {
+        const alertDiv = document.getElementById("news-alert");
+        const detailsDiv = document.getElementById("news-details");
+        const countdownSpan = document.getElementById("news-countdown");
+        const warningDiv = document.getElementById("news-warning");
+        
+        alertDiv.classList.remove("hidden");
+        
+        const impactColor = news.impact === "HIGH" ? "#ff4444" : news.impact === "MEDIUM" ? "#ffaa00" : "#00ff88";
+        
+        detailsDiv.innerHTML = `
+            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span>🇺🇸 ${news.currency}</span>
+                <span style="color: ${impactColor}; font-weight: bold;">⚡ ${news.impact}</span>
+            </div>
+            <div style="font-size: 16px; font-weight: bold;">📢 ${news.title}</div>
+            <div style="font-size: 12px; color: #888; margin-top: 5px;">التوقع: ${news.forecast} | السابق: ${news.previous}</div>
+        `;
+        
+        warningDiv.innerHTML = `⚠️ تحذير: التداول محظور ${minutesLeft} دقيقة قبل الخبر! ⚠️`;
+        
+        // تحديث العد التنازلي
+        let remaining = minutesLeft * 60;
+        const countdownInterval = setInterval(() => {
+            if(remaining <= 0) {
+                clearInterval(countdownInterval);
+                alertDiv.classList.add("hidden");
+                tradingBlocked = false;
+                return;
+            }
+            const mins = Math.floor(remaining / 60);
+            const secs = remaining % 60;
+            countdownSpan.innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+            remaining--;
+        }, 1000);
+    }
+
+    // ==================== STATS MANAGEMENT ====================
+    function loadStats() {
+        const savedStats = JSON.parse(localStorage.getItem("hcg_stats"));
+        if (savedStats && savedStats.date === new Date().toDateString()) { 
+            stats = savedStats; 
+        } else {
+            saveStats();
+        }
+        updateStatsUI();
+    }
+
+    function saveStats() { 
+        localStorage.setItem("hcg_stats", JSON.stringify(stats)); 
+    }
+
+    function logTrade(result) {
+        if(tradingBlocked) {
+            alert("⚠️ لا يمكن تسجيل صفقات أثناء الأخبار الهامة!");
+            return;
+        }
+        
+        if(result === 'WIN') stats.wins++; 
+        else stats.losses++;
+        saveStats();
+        updateStatsUI();
+        
+        document.getElementById('results-hunt').classList.add('hidden');
+        document.getElementById('results-manage').classList.add('hidden');
+        document.getElementById('image-preview').style.display = 'none';
+        document.getElementById('btn-scan').classList.add('hidden');
+        
+        document.getElementById('status-text').innerHTML = `[ ✅ تم تسجيل ${result === 'WIN' ? 'ربح' : 'خسارة'} ]`;
+    }
+
+    function updateStatsUI() {
+        document.getElementById("win-count").innerText = stats.wins;
+        document.getElementById("loss-count").innerText = stats.losses;
+        const total = stats.wins + stats.losses;
+        const winRate = total > 0 ? Math.round((stats.wins / total) * 100) : 0;
+        document.getElementById("win-rate").innerText = winRate;
+        
+        // 3-Strike Rule
+        if (stats.losses >= 3) {
+            const card = document.getElementById("upload-card");
+            const statsBar = document.getElementById("stats-bar");
+            card.classList.add('hidden');
+            statsBar.classList.add('circuit-locked');
+            statsBar.innerHTML = `<span style="color:white; font-size:1.2em; text-align:center; width:100%;">🚨 CIRCUIT BREAKER - توقف التداول لليوم 🚨</span>`;
+        }
+    }
+
+    // ==================== IMAGE PROCESSING ====================
     function setMode(mode) {
         currentMode = mode;
         document.getElementById('tab-hunt').classList.remove('active');
@@ -187,57 +520,24 @@
         
         document.getElementById('results-hunt').classList.add('hidden');
         document.getElementById('results-manage').classList.add('hidden');
-        document.getElementById('status-text').innerText = `[ ${mode} MODE READY. UPLOAD CHART ]`;
+        document.getElementById('status-text').innerHTML = `[ 🔍 ${mode} MODE - انتظر رفع الصورة ]`;
     }
 
-    // --- CIRCUIT BREAKER LOGIC ---
-    function loadStats() {
-        const savedStats = JSON.parse(localStorage.getItem("hcg_stats"));
-        if (savedStats && savedStats.date === new Date().toDateString()) { stats = savedStats; } 
-        else { saveStats(); }
-        updateStatsUI();
-    }
-
-    function saveStats() { localStorage.setItem("hcg_stats", JSON.stringify(stats)); }
-
-    function logTrade(result) {
-        if(result === 'WIN') stats.wins++; else stats.losses++;
-        saveStats();
-        updateStatsUI();
-        document.getElementById('results-hunt').classList.add('hidden');
-        document.getElementById('results-manage').classList.add('hidden');
-        document.getElementById('image-preview').style.display = 'none';
-        document.getElementById('btn-scan').classList.add('hidden');
-    }
-
-    function updateStatsUI() {
-        document.getElementById("win-count").innerText = stats.wins;
-        document.getElementById("loss-count").innerText = stats.losses;
-        
-        const card = document.getElementById("upload-card");
-        const statsBar = document.getElementById("stats-bar");
-        
-        // The 3-Strike Rule
-        if (stats.losses >= 3 || stats.wins >= 3) {
-            card.classList.add('hidden');
-            statsBar.classList.add('circuit-locked');
-            statsBar.innerHTML = `<span style="color:white; font-size:1.2em; text-align:center; width:100%;">🚨 CIRCUIT BREAKER ENGAGED. SYSTEM LOCKED FOR TODAY. 🚨</span>`;
-        }
-    }
-
-    // --- IMAGE PROCESSING & API ---
     function processImage(event) {
         const file = event.target.files[0];
         if(!file) return;
-        document.getElementById('status-text').innerText = "[ COMPRESSING DATA... ]";
+        
+        document.getElementById('status-text').innerHTML = "[ 📸 جاري معالجة الصورة... ]";
         const reader = new FileReader();
+        
         reader.onload = function(e) {
             const img = new Image();
             img.onload = function() {
                 const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 1024; 
-                const scaleSize = MAX_WIDTH / img.width;
-                canvas.width = MAX_WIDTH; canvas.height = img.height * scaleSize;
+                const MAX_WIDTH = 1024;
+                const scale = MAX_WIDTH / img.width;
+                canvas.width = MAX_WIDTH;
+                canvas.height = img.height * scale;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 base64Image = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
@@ -245,34 +545,54 @@
                 document.getElementById('image-preview').src = e.target.result;
                 document.getElementById('image-preview').style.display = 'block';
                 document.getElementById('btn-scan').classList.remove("hidden");
-                document.getElementById('status-text').innerText = "[ DATA LOADED. READY TO SCAN ]";
+                document.getElementById('status-text').innerHTML = "[ ✅ الصورة جاهزة للتحليل ]";
             }
             img.src = e.target.result;
         }
         reader.readAsDataURL(file);
     }
 
+    // ==================== GEMINI API CALL ====================
     async function executeScan() {
         if(!base64Image) return;
+        if(tradingBlocked) {
+            alert("⚠️ التداول محظور بسبب أخبار هامة قادمة!");
+            return;
+        }
+        
         const apiKey = localStorage.getItem("hcg_api_key");
+        if(!apiKey) { alert("مفتاح API مفقود"); return; }
+        
         const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
         
         document.getElementById('btn-scan').classList.add("hidden");
         document.getElementById('loading-scanner').style.display = "block";
-        document.getElementById('status-text').innerText = "[ ANALYZING VIA V18.5 NEURAL NET... ]";
+        document.getElementById('status-text').innerHTML = "[ 🤖 جاري التحليل بالذكاء الاصطناعي... ]";
         
         document.getElementById('results-hunt').classList.add('hidden');
         document.getElementById('results-manage').classList.add('hidden');
 
         const activePrompt = currentMode === "HUNT" ? PROMPT_HUNT : PROMPT_MANAGE;
-        const payload = { "contents": [{ "parts": [ {"text": activePrompt}, {"inline_data": {"mime_type": "image/jpeg", "data": base64Image}} ] }] };
+        const payload = { 
+            "contents": [{ 
+                "parts": [ 
+                    {"text": activePrompt}, 
+                    {"inline_data": {"mime_type": "image/jpeg", "data": base64Image}}
+                ] 
+            }] 
+        };
 
         try {
-            const response = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-            if(!response.ok) throw new Error("API Authentication or Network Failure");
+            const response = await fetch(url, { 
+                method: "POST", 
+                headers: { "Content-Type": "application/json" }, 
+                body: JSON.stringify(payload) 
+            });
+            
+            if(!response.ok) throw new Error(`API Error: ${response.status}`);
+            
             const data = await response.json();
             let resultText = data.candidates[0].content.parts[0].text;
-            
             resultText = resultText.replace(/```json/gi, '').replace(/```/g, '').trim();
             const parsed = JSON.parse(resultText);
 
@@ -282,16 +602,12 @@
                 sig.innerText = parsed.signal;
                 sig.className = "signal-header " + parsed.signal;
                 
-                document.getElementById('hunt-reason').innerText = parsed.reasoning;
-                document.getElementById('hunt-asset').innerText = parsed.asset + " | " + parsed.trend;
-                
-                let confColor = parsed.confidence_score >= 80 ? 'var(--success)' : (parsed.confidence_score >= 60 ? 'var(--warning)' : 'var(--danger)');
-                document.getElementById('hunt-conf').innerText = parsed.confidence_score + "%";
-                document.getElementById('hunt-conf').style.color = confColor;
-                
+                document.getElementById('hunt-reason').innerText = parsed.reasoning || "تحليل فني";
+                document.getElementById('hunt-asset').innerText = `${parsed.asset} | ${parsed.trend}`;
+                document.getElementById('hunt-conf').innerHTML = `${parsed.confidence_score}%`;
                 document.getElementById('hunt-entry').innerText = parsed.entry_point;
                 document.getElementById('hunt-sl').innerText = parsed.stop_loss;
-                document.getElementById('hunt-traps').innerText = parsed.trap_zones;
+                document.getElementById('hunt-traps').innerText = parsed.trap_zones || "لا توجد مناطق محددة";
             } else {
                 document.getElementById('results-manage').classList.remove("hidden");
                 const act = document.getElementById('manage-action');
@@ -300,20 +616,16 @@
                 
                 document.getElementById('manage-reason').innerText = parsed.reasoning;
                 document.getElementById('manage-status').innerText = parsed.trade_status;
-                
-                let riskColor = parsed.risk_level.toUpperCase() === 'HIGH' ? 'var(--danger)' : 'var(--success)';
-                document.getElementById('manage-risk').innerText = parsed.risk_level;
-                document.getElementById('manage-risk').style.color = riskColor;
-                
+                document.getElementById('manage-risk').innerHTML = parsed.risk_level;
                 document.getElementById('manage-new-sl').innerText = parsed.new_sl;
             }
 
-            document.getElementById('status-text').innerText = "[ SCAN COMPLETE ]";
+            document.getElementById('status-text').innerHTML = "[ ✅ التحليل مكتمل ]";
             document.getElementById('status-text').style.color = "var(--success)";
 
         } catch (error) {
             console.error(error);
-            document.getElementById('status-text').innerText = "[ FATAL ERROR: INVALID RESPONSE ]";
+            document.getElementById('status-text').innerHTML = "[ ❌ خطأ في التحليل ]";
             document.getElementById('status-text').style.color = "var(--danger)";
         } finally {
             document.getElementById('loading-scanner').style.display = "none";
