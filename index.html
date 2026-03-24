@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#080c10">
-    <title>HCG-TRADER V18.5 TITAN - الإمبراطورية</title>
+    <title>HCG-TRADER V18.5 TITAN - ULTIMATE</title>
     <style>
         :root {
             --bg-color: #05080a;
-            --panel-bg: #10161d;
+            --panel-bg: #0f1419;
             --primary: #ffd700;
-            --primary-glow: rgba(255, 215, 0, 0.3);
+            --primary-glow: rgba(255, 215, 0, 0.2);
             --success: #00ff88;
             --danger: #ff4444;
             --warning: #ffaa00;
@@ -18,90 +18,111 @@
             --border: #2a2f3a;
             --gold: #d4af37;
         }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: 'Segoe UI', 'Cairo', 'Courier New', monospace;
-            margin: 0;
             padding: 15px;
             min-height: 100vh;
-            background-image: radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+            background-image: radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 70%);
         }
-        h2 {
-            color: var(--gold);
-            border-bottom: 2px solid var(--gold);
-            padding-bottom: 10px;
-            font-size: 1.4em;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px var(--primary-glow);
+        .container { max-width: 1400px; margin: 0 auto; }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0f1419, #080c10);
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
         }
+        h1 { color: var(--gold); font-size: 1.8rem; letter-spacing: 2px; }
+        .badge { color: var(--gold); font-size: 12px; margin-top: 5px; }
+        
+        /* Market Grid */
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .market-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            transition: all 0.3s;
+        }
+        .market-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+        .market-symbol { font-size: 14px; color: var(--gold); font-weight: bold; }
+        .market-price { font-size: 18px; font-weight: bold; margin: 5px 0; }
+        .market-change { font-size: 12px; }
+        .positive { color: var(--success); }
+        .negative { color: var(--danger); }
+        
+        /* News Feed */
+        .news-section {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .news-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .news-item {
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .news-item:hover { background: #1a1f2a; }
+        .news-title { font-size: 13px; font-weight: bold; }
+        .news-time { font-size: 10px; color: #888; margin-top: 4px; }
+        .impact-high { color: var(--danger); }
+        .impact-medium { color: var(--warning); }
+        .impact-low { color: var(--success); }
+        
+        /* Cards */
         .card {
             background: var(--panel-bg);
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            backdrop-filter: blur(5px);
-        }
-        input, select {
-            width: 100%;
-            padding: 12px;
-            background: #0a0e14;
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            border-radius: 8px;
-            margin-bottom: 12px;
-            font-size: 14px;
-            text-align: center;
-        }
-        input:focus, select:focus {
-            outline: none;
-            box-shadow: 0 0 15px var(--primary-glow);
         }
         
         /* Buttons */
         .btn {
-            width: 100%;
-            padding: 12px;
+            padding: 12px 20px;
             font-weight: bold;
-            font-family: inherit;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            transition: all 0.2s;
+            transition: 0.2s;
             font-size: 14px;
         }
         .btn:active { transform: scale(0.98); }
-        .btn-green { background: linear-gradient(135deg, #1a5a1a, #2a8a2a); color: white; border: 1px solid var(--success); }
+        .btn-gold { background: linear-gradient(135deg, #b8860b, #d4af37); color: #000; }
         .btn-blue { background: linear-gradient(135deg, #1a3a5a, #2a5a8a); color: white; border: 1px solid #4a9eff; }
-        .btn-red { background: linear-gradient(135deg, #8a1a1a, #aa2a2a); color: white; border: 1px solid var(--danger); animation: pulse 2s infinite; }
-        .btn-gold { background: linear-gradient(135deg, #b8860b, #d4af37); color: #0a0c0f; font-weight: bold; border: none; }
-        .btn-hollow { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 10px; }
+        .btn-red { background: linear-gradient(135deg, #8a1a1a, #aa2a2a); color: white; animation: pulse 1.5s infinite; }
+        .btn-hollow { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
         
-        /* News Alert */
-        .news-alert {
-            background: linear-gradient(135deg, #2a1a0a, #3a2a1a);
-            border: 2px solid var(--warning);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-            animation: pulse-warning 1.5s infinite;
+        /* Tabs */
+        .tab-container { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab {
+            flex: 1;
+            padding: 12px;
+            background: #0a0e14;
+            border: 1px solid var(--border);
+            color: #888;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 40px;
+            text-align: center;
         }
-        @keyframes pulse-warning {
-            0% { box-shadow: 0 0 0 0 rgba(255, 170, 0, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 170, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 170, 0, 0); }
-        }
-        .news-title { font-size: 18px; font-weight: bold; color: var(--warning); }
-        .news-countdown { font-size: 24px; font-weight: bold; font-family: monospace; color: var(--danger); }
+        .tab.active { background: linear-gradient(135deg, var(--gold), #b8860b); color: #000; border-color: var(--gold); }
         
         /* Stats Bar */
         .stats-bar {
@@ -116,34 +137,9 @@
         }
         .win-text { color: var(--success); }
         .loss-text { color: var(--danger); }
-        .circuit-locked { border: 2px solid var(--danger) !important; background: #2a0a0a !important; }
+        .circuit-locked { border: 2px solid var(--danger); background: #2a0a0a; }
         
-        /* Tabs */
-        .tab-container {
-            display: flex;
-            margin-bottom: 20px;
-            gap: 10px;
-        }
-        .tab {
-            flex: 1;
-            padding: 12px;
-            background: #0a0e14;
-            border: 1px solid var(--border);
-            color: #888;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 40px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-        .tab.active {
-            background: linear-gradient(135deg, var(--gold), #b8860b);
-            color: #000;
-            border-color: var(--gold);
-            box-shadow: 0 0 20px var(--primary-glow);
-        }
-        
-        /* Grid */
+        /* Grid for analysis */
         .grid-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -156,25 +152,10 @@
             border-left: 3px solid var(--gold);
             border-radius: 8px;
         }
-        .data-title {
-            font-size: 0.7em;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-        .data-value {
-            font-size: 1.1em;
-            font-weight: bold;
-        }
+        .data-title { font-size: 0.7em; color: #888; text-transform: uppercase; margin-bottom: 5px; }
+        .data-value { font-size: 1.1em; font-weight: bold; }
         
-        #image-preview {
-            width: 100%;
-            border-radius: 12px;
-            border: 1px solid var(--gold);
-            margin: 15px 0;
-            display: none;
-        }
+        #image-preview { width: 100%; border-radius: 12px; border: 1px solid var(--gold); margin: 15px 0; display: none; }
         .hidden { display: none !important; }
         
         .scanner {
@@ -185,314 +166,301 @@
             border-radius: 2px;
             animation: scan 1s infinite ease-in-out;
             display: none;
-            box-shadow: 0 0 10px var(--gold);
         }
-        @keyframes scan {
-            0% { transform: scaleX(0.1); opacity: 0.3; }
-            50% { transform: scaleX(1); opacity: 1; }
-            100% { transform: scaleX(0.1); opacity: 0.3; }
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 5px rgba(255,0,0,0.2); }
-            50% { box-shadow: 0 0 20px rgba(255,0,0,0.6); }
-            100% { box-shadow: 0 0 5px rgba(255,0,0,0.2); }
-        }
+        @keyframes scan { 0% { transform: scaleX(0.1); opacity: 0.3; } 50% { transform: scaleX(1); opacity: 1; } 100% { transform: scaleX(0.1); opacity: 0.3; } }
+        @keyframes pulse { 0% { box-shadow: 0 0 5px rgba(255,0,0,0.2); } 50% { box-shadow: 0 0 20px rgba(255,0,0,0.6); } 100% { box-shadow: 0 0 5px rgba(255,0,0,0.2); } }
         
-        .signal-header {
-            font-size: 2em;
-            margin: 10px 0;
-            font-weight: bold;
-            text-align: center;
-        }
+        .signal-header { font-size: 2em; margin: 10px 0; font-weight: bold; text-align: center; }
         .BUY { color: var(--success); text-shadow: 0 0 10px rgba(0,255,136,0.3); }
         .SELL { color: var(--danger); text-shadow: 0 0 10px rgba(255,68,68,0.3); }
         .WAIT { color: var(--warning); text-shadow: 0 0 10px rgba(255,170,0,0.3); }
-        .HOLD { color: var(--success); }
-        .MOVE_BE { color: var(--warning); }
-        .CLOSE_NOW { color: var(--danger); }
+        .TRAP { color: var(--warning); background: rgba(255,170,0,0.2); border-radius: 20px; padding: 10px; text-align: center; }
         
         .status-online { color: var(--success); }
-        .status-warning { color: var(--warning); }
-        .status-danger { color: var(--danger); }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     </style>
 </head>
 <body>
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <h1>👑 HCG-TRADER V18.5 TITAN</h1>
+        <div class="badge">ULTIMATE EDITION • AI-POWERED TRADING SYSTEM</div>
+    </div>
 
-<div id="setup-screen" class="card" style="max-width: 400px; margin: 50px auto;">
-    <h2 style="text-align: center;">🔐 HCG-TRADER TITAN</h2>
-    <p style="text-align: center; color: #888; margin-bottom: 20px;">أدخل مفتاح Gemini API للبدء</p>
-    <input type="password" id="api-key" placeholder="أدخل مفتاح API">
-    <button class="btn btn-gold" onclick="saveKey()">🚀 تشغيل الإمبراطورية</button>
-</div>
+    <!-- Setup Screen -->
+    <div id="setup-screen" class="card" style="max-width: 500px; margin: 0 auto;">
+        <h2 style="text-align: center;">🔐 SYSTEM INITIALIZATION</h2>
+        <p style="text-align: center; color: #888; margin-bottom: 20px;">Enter Gemini API Key to activate TITAN AI</p>
+        <input type="password" id="api-key" placeholder="Enter Gemini API Key" style="width: 100%; padding: 12px; background: #0a0e14; border: 1px solid var(--gold); color: var(--gold); border-radius: 8px; margin-bottom: 15px;">
+        <button class="btn btn-gold" style="width: 100%;" onclick="saveKey()">🚀 ACTIVATE TITAN</button>
+    </div>
 
-<div id="main-screen" class="hidden">
-    <h2 style="text-align: center;">👑 HCG-TRADER V18.5 TITAN</h2>
-    
-    <!-- News Alert Section -->
-    <div id="news-alert" class="news-alert hidden">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span class="news-title">📰 أخبار هامة</span>
-            <span id="news-countdown" class="news-countdown">--:--:--</span>
+    <div id="main-screen" class="hidden">
+        <!-- Stats Bar -->
+        <div class="stats-bar" id="stats-bar">
+            <span>📊 DAILY PNL:</span>
+            <span class="win-text">🟢 W: <span id="win-count">0</span></span>
+            <span class="loss-text">🔴 L: <span id="loss-count">0</span></span>
+            <span>🎯 WIN RATE: <span id="win-rate">0</span>%</span>
         </div>
-        <div id="news-details" style="margin-top: 10px; font-size: 14px;"></div>
-        <div id="news-warning" style="margin-top: 10px; color: var(--danger); font-weight: bold;"></div>
-    </div>
-    
-    <div class="stats-bar" id="stats-bar">
-        <span>📊 الأداء اليومي:</span>
-        <span class="win-text">🟢 فوز: <span id="win-count">0</span></span>
-        <span class="loss-text">🔴 خسارة: <span id="loss-count">0</span></span>
-        <span>🎯 نسبة النجاح: <span id="win-rate">0</span>%</span>
-    </div>
 
-    <div class="tab-container">
-        <div class="tab active" id="tab-hunt" onclick="setMode('HUNT')">🔍 HUNTING MODE</div>
-        <div class="tab" id="tab-manage" onclick="setMode('MANAGE')">🛡️ LIVE MANAGE</div>
-    </div>
-    
-    <div class="card" id="upload-card">
-        <input type="file" id="file-gallery" accept="image/*" class="hidden" onchange="processImage(event)">
-        <input type="file" id="file-camera" accept="image/*" capture="environment" class="hidden" onchange="processImage(event)">
-        
-        <div style="display: flex; gap: 15px;">
-            <button class="btn btn-blue" onclick="document.getElementById('file-gallery').click()">📁 المعرض</button>
-            <button class="btn btn-blue" onclick="document.getElementById('file-camera').click()">📷 الكاميرا</button>
+        <!-- Live Market Prices (Yahoo Finance) -->
+        <div class="market-grid" id="market-grid">
+            <div class="market-card">Loading prices...</div>
         </div>
-        
-        <img id="image-preview" src="">
-        <button id="btn-scan" class="btn btn-gold hidden" onclick="executeScan()">⚡ تحليل الشارت</button>
-        <div id="loading-scanner" class="scanner"></div>
-        <p id="status-text" style="font-size: 0.85em; color: #888; text-align: center;">[ ⏳ انتظار رفع الصورة ]</p>
-    </div>
 
-    <!-- Hunting Mode Results -->
-    <div id="results-hunt" class="card hidden">
-        <div id="hunt-signal" class="signal-header">--</div>
-        <div style="font-size: 0.85em; color: #aaa; text-align: center; border-bottom: 1px solid #333; padding-bottom: 10px;" id="hunt-reason">تحليل...</div>
-        
-        <div class="grid-container">
-            <div class="data-box"><div class="data-title">الزوج / الاتجاه</div><div class="data-value" id="hunt-asset">--</div></div>
-            <div class="data-box"><div class="data-title">نسبة الثقة</div><div class="data-value" id="hunt-conf">--</div></div>
-            <div class="data-box"><div class="data-title">نقطة الدخول</div><div class="data-value" id="hunt-entry">--</div></div>
-            <div class="data-box" style="border-left-color: var(--danger);"><div class="data-title">وقف الخسارة</div><div class="data-value" id="hunt-sl">--</div></div>
-            <div class="data-box" style="grid-column: span 2;"><div class="data-title">🎯 مناطق الصيد الذكية</div><div class="data-value" id="hunt-traps" style="font-size: 0.85em;">--</div></div>
+        <!-- News Feed -->
+        <div class="news-section">
+            <div class="news-header">
+                <span>📰 MARKET NEWS & ECONOMIC CALENDAR</span>
+                <span id="news-refresh" style="font-size: 10px; color: #888;">updating...</span>
+            </div>
+            <div id="news-list" style="max-height: 200px; overflow-y: auto;">
+                <div style="text-align: center; padding: 20px;">Loading news...</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tab-container">
+            <div class="tab active" id="tab-hunt" onclick="setMode('HUNT')">🔍 HUNTING MODE</div>
+            <div class="tab" id="tab-manage" onclick="setMode('MANAGE')">🛡️ LIVE MANAGE</div>
         </div>
         
-        <div style="display: flex; gap: 15px; margin-top: 15px;">
-            <button class="btn btn-green" onclick="logTrade('WIN')">✅ تسجيل ربح</button>
-            <button class="btn btn-red" style="animation: none;" onclick="logTrade('LOSS')">❌ تسجيل خسارة</button>
+        <!-- Upload Card -->
+        <div class="card" id="upload-card">
+            <input type="file" id="file-gallery" accept="image/*" class="hidden" onchange="processImage(event)">
+            <input type="file" id="file-camera" accept="image/*" capture="environment" class="hidden" onchange="processImage(event)">
+            <div style="display: flex; gap: 15px;">
+                <button class="btn btn-blue" style="flex: 1;" onclick="document.getElementById('file-gallery').click()">📁 GALLERY</button>
+                <button class="btn btn-blue" style="flex: 1;" onclick="document.getElementById('file-camera').click()">📷 CAMERA</button>
+            </div>
+            <img id="image-preview" src="">
+            <button id="btn-scan" class="btn btn-gold hidden" style="width: 100%; margin-top: 15px;" onclick="executeScan()">⚡ ANALYZE CHART</button>
+            <div id="loading-scanner" class="scanner"></div>
+            <p id="status-text" style="font-size: 0.85em; color: #888; text-align: center; margin-top: 10px;">[ AWAITING CHART UPLOAD ]</p>
         </div>
-    </div>
 
-    <!-- Live Manage Results -->
-    <div id="results-manage" class="card hidden">
-        <div id="manage-action" class="signal-header">--</div>
-        <div style="font-size: 0.85em; color: #aaa; text-align: center; border-bottom: 1px solid #333; padding-bottom: 10px;" id="manage-reason">تحليل...</div>
+        <!-- Hunting Mode Results -->
+        <div id="results-hunt" class="card hidden">
+            <div id="hunt-signal" class="signal-header">--</div>
+            <div id="hunt-trap-alert" class="hidden" style="background: rgba(255,170,0,0.2); border-radius: 12px; padding: 15px; margin-bottom: 15px; text-align: center;">
+                <span style="font-size: 20px;">🪤</span>
+                <div id="trap-message" style="font-weight: bold; margin-top: 5px;"></div>
+            </div>
+            <div id="hunt-reason" style="font-size: 0.85em; color: #aaa; text-align: center; border-bottom: 1px solid #333; padding-bottom: 10px;">Analyzing...</div>
+            
+            <div class="grid-container">
+                <div class="data-box"><div class="data-title">ASSET / TREND</div><div class="data-value" id="hunt-asset">--</div></div>
+                <div class="data-box"><div class="data-title">CONFIDENCE</div><div class="data-value" id="hunt-conf">--</div></div>
+                <div class="data-box"><div class="data-title">ENTRY</div><div class="data-value" id="hunt-entry">--</div></div>
+                <div class="data-box" style="border-left-color: var(--danger);"><div class="data-title">STOP LOSS</div><div class="data-value" id="hunt-sl">--</div></div>
+                <div class="data-box" style="grid-column: span 2;"><div class="data-title">🎯 SMART TRAP ZONES</div><div class="data-value" id="hunt-traps" style="font-size: 0.85em;">--</div></div>
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-top: 15px;">
+                <button class="btn btn-green" style="background: linear-gradient(135deg, #1a5a1a, #2a8a2a);" onclick="logTrade('WIN')">✅ RECORD WIN</button>
+                <button class="btn btn-red" style="animation: none;" onclick="logTrade('LOSS')">❌ RECORD LOSS</button>
+            </div>
+        </div>
+
+        <!-- Live Manage Results -->
+        <div id="results-manage" class="card hidden">
+            <div id="manage-action" class="signal-header">--</div>
+            <div id="manage-reason" style="font-size: 0.85em; color: #aaa; text-align: center; border-bottom: 1px solid #333; padding-bottom: 10px;">Analyzing...</div>
+            <div class="grid-container">
+                <div class="data-box"><div class="data-title">TRADE STATUS</div><div class="data-value" id="manage-status">--</div></div>
+                <div class="data-box"><div class="data-title">RISK LEVEL</div><div class="data-value" id="manage-risk">--</div></div>
+                <div class="data-box" style="grid-column: span 2;"><div class="data-title">SUGGESTED STOP LOSS</div><div class="data-value" id="manage-new-sl">--</div></div>
+            </div>
+            <div style="display: flex; gap: 15px; margin-top: 15px;">
+                <button class="btn btn-green" style="background: linear-gradient(135deg, #1a5a1a, #2a8a2a);" onclick="logTrade('WIN')">✅ CLOSE WIN</button>
+                <button class="btn btn-red" style="animation: none;" onclick="logTrade('LOSS')">❌ CLOSE LOSS</button>
+            </div>
+        </div>
         
-        <div class="grid-container">
-            <div class="data-box"><div class="data-title">حالة الصفقة</div><div class="data-value" id="manage-status">--</div></div>
-            <div class="data-box"><div class="data-title">مستوى المخاطرة</div><div class="data-value" id="manage-risk">--</div></div>
-            <div class="data-box" style="grid-column: span 2;"><div class="data-title">وقف الخسارة المقترح</div><div class="data-value" id="manage-new-sl">--</div></div>
-        </div>
-
-        <div style="display: flex; gap: 15px; margin-top: 15px;">
-            <button class="btn btn-green" onclick="logTrade('WIN')">✅ إغلاق ربح</button>
-            <button class="btn btn-red" style="animation: none;" onclick="logTrade('LOSS')">❌ إغلاق خسارة</button>
-        </div>
+        <button class="btn btn-hollow" style="width: 100%; margin-top: 10px;" onclick="resetApp()">⚙️ RESET SYSTEM</button>
     </div>
-    
-    <button class="btn btn-hollow" style="margin-top: 10px;" onclick="resetApp()">⚙️ إعادة ضبط النظام</button>
 </div>
 
 <script>
     // ==================== CONFIGURATION ====================
-    const GEMINI_API_KEY = localStorage.getItem("hcg_api_key") || "";
-    
-    // ==================== NEWS DATA (Forex Factory Style) ====================
-    const ECONOMIC_CALENDAR = [
-        { date: "2026-03-25", time: "14:30", currency: "USD", impact: "HIGH", title: "CPI (مؤشر أسعار المستهلكين)", forecast: "3.1%", previous: "3.0%" },
-        { date: "2026-03-26", time: "12:00", currency: "EUR", impact: "HIGH", title: "قرار الفائدة الأوروبي", forecast: "4.00%", previous: "3.75%" },
-        { date: "2026-03-26", time: "14:30", currency: "USD", impact: "MEDIUM", title: "طلبات الإعانة", forecast: "220K", previous: "218K" },
-        { date: "2026-03-27", time: "08:30", currency: "GBP", impact: "HIGH", title: "الناتج المحلي الإجمالي", forecast: "0.3%", previous: "0.2%" },
-        { date: "2026-03-27", time: "14:30", currency: "USD", impact: "HIGH", title: "PCE (الإنفاق الشخصي)", forecast: "2.8%", previous: "2.7%" },
-        { date: "2026-03-28", time: "10:00", currency: "EUR", impact: "MEDIUM", title: "ثقة المستهلك", forecast: "-15", previous: "-16" },
-        { date: "2026-03-28", time: "15:00", currency: "USD", impact: "LOW", title: "مبيعات المنازل", forecast: "4.1M", previous: "4.0M" }
-    ];
-    
-    // ==================== PROMPTS ====================
-    const PROMPT_HUNT = `أنت HCG-TRADER V18.5 TITAN، محلل فني خبير.
-القواعد:
-1. لا تقدم إشارة BUY أو SELL إلا إذا كان هناك توافق بين التحليل الفني (SMC zones، Price Action، ADX/MFI).
-2. إذا لم تتوفر الشروط، أعد WAIT.
-3. أعد الإجابة بصيغة JSON فقط.
-المخطط المطلوب:
-{
-  "asset": "الزوج",
-  "trend": "الاتجاه",
-  "signal": "BUY/SELL/WAIT",
-  "confidence_score": 0-100,
-  "entry_point": "سعر الدخول",
-  "stop_loss": "وقف الخسارة",
-  "trap_zones": "مناطق الصيد",
-  "reasoning": "التحليل"
-}`;
-
-    const PROMPT_MANAGE = `أنت HCG-TRADER V18.5 TITAN، مدير الصفقات.
-حلل الصورة التي تحتوي على صفقة مفتوحة (ابحث عن خط الدخول، وقف الخسارة، الأهداف).
-حدد الإجراء المناسب: HOLD (استمرار)، MOVE_BE (نقل وقف الخسارة إلى نقطة الدخول)، CLOSE_NOW (إغلاق فوري).
-أعد JSON فقط:
-{
-  "trade_status": "Floating Profit/Drawdown/B.E",
-  "action": "HOLD/MOVE_BE/CLOSE_NOW",
-  "risk_level": "High/Medium/Low",
-  "new_sl": "السعر الجديد لوقف الخسارة",
-  "reasoning": "التحليل"
-}`;
-
-    // ==================== GLOBAL VARIABLES ====================
     let base64Image = "";
     let currentMode = "HUNT";
     let stats = { wins: 0, losses: 0, date: new Date().toDateString() };
+    let marketInterval = null;
     let newsInterval = null;
-    let activeNews = null;
     let tradingBlocked = false;
 
-    // ==================== INITIALIZATION ====================
-    window.onload = function() {
-        if(localStorage.getItem("hcg_api_key")) {
-            document.getElementById("setup-screen").classList.add("hidden");
-            document.getElementById("main-screen").classList.remove("hidden");
-            loadStats();
-            startNewsMonitor();
+    // ==================== YAHOO FINANCE PRICES ====================
+    const SYMBOLS = [
+        { name: "XAUUSD", symbol: "GC=F", title: "GOLD" },
+        { name: "BTCUSD", symbol: "BTC-USD", title: "BITCOIN" },
+        { name: "NAS100", symbol: "^NDX", title: "NASDAQ" },
+        { name: "ETHUSD", symbol: "ETH-USD", title: "ETHEREUM" },
+        { name: "EURUSD", symbol: "EURUSD=X", title: "EUR/USD" }
+    ];
+
+    async function fetchMarketPrices() {
+        try {
+            const prices = {};
+            for (const asset of SYMBOLS) {
+                const url = `https://query1.finance.yahoo.com/v8/finance/chart/${asset.symbol}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.chart && data.chart.result && data.chart.result[0]) {
+                    const meta = data.chart.result[0].meta;
+                    const price = meta.regularMarketPrice;
+                    const prevClose = meta.previousClose;
+                    const change = ((price - prevClose) / prevClose) * 100;
+                    prices[asset.name] = { price: price.toFixed(2), change: change.toFixed(2), title: asset.title };
+                }
+            }
+            return prices;
+        } catch (error) {
+            console.error("Market fetch error:", error);
+            return null;
         }
     }
 
-    function saveKey() {
-        const key = document.getElementById("api-key").value.trim();
-        if(key) { 
-            localStorage.setItem("hcg_api_key", key); 
-            location.reload(); 
+    async function updateMarketPrices() {
+        const prices = await fetchMarketPrices();
+        const grid = document.getElementById("market-grid");
+        if (prices) {
+            let html = "";
+            for (const [key, data] of Object.entries(prices)) {
+                const changeClass = parseFloat(data.change) >= 0 ? "positive" : "negative";
+                const changeSign = parseFloat(data.change) >= 0 ? "+" : "";
+                html += `
+                    <div class="market-card">
+                        <div class="market-symbol">${key} • ${data.title}</div>
+                        <div class="market-price">$${data.price}</div>
+                        <div class="market-change ${changeClass}">${changeSign}${data.change}%</div>
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+        } else {
+            grid.innerHTML = '<div class="market-card">⚠️ Price feed unavailable</div>';
         }
     }
-    
-    function resetApp() { 
-        localStorage.removeItem("hcg_api_key"); 
-        localStorage.removeItem("hcg_stats");
-        location.reload(); 
-    }
 
-    // ==================== NEWS MONITOR ====================
-    function startNewsMonitor() {
-        checkNews();
-        newsInterval = setInterval(checkNews, 60000); // كل دقيقة
-    }
-    
-    function checkNews() {
+    // ==================== NEWS FEED ====================
+    const ECONOMIC_CALENDAR = [
+        { date: new Date().toISOString().split('T')[0], time: "14:30", currency: "USD", impact: "HIGH", title: "CPI (Consumer Price Index)", forecast: "3.1%", previous: "3.0%" },
+        { date: new Date().toISOString().split('T')[0], time: "12:00", currency: "EUR", impact: "MEDIUM", title: "ECB Interest Rate Decision", forecast: "4.00%", previous: "3.75%" },
+        { date: new Date().toISOString().split('T')[0], time: "15:30", currency: "USD", impact: "HIGH", title: "Crude Oil Inventories", forecast: "-2.1M", previous: "-1.5M" }
+    ];
+
+    async function fetchNews() {
         const now = new Date();
-        const today = now.toISOString().split('T')[0];
         const currentHour = now.getHours();
         const currentMinute = now.getMinutes();
         const currentTime = `${currentHour.toString().padStart(2,'0')}:${currentMinute.toString().padStart(2,'0')}`;
         
-        // البحث عن أخبار اليوم
+        let html = "";
         let upcomingNews = null;
         let timeToNews = Infinity;
         
-        for(const news of ECONOMIC_CALENDAR) {
-            if(news.date === today && news.time > currentTime) {
+        for (const news of ECONOMIC_CALENDAR) {
+            if (news.date === now.toISOString().split('T')[0]) {
                 const [nh, nm] = news.time.split(':');
                 const newsMinutes = parseInt(nh)*60 + parseInt(nm);
                 const nowMinutes = currentHour*60 + currentMinute;
                 const diff = newsMinutes - nowMinutes;
-                if(diff < timeToNews && diff >= 0) {
+                
+                const impactClass = news.impact === "HIGH" ? "impact-high" : news.impact === "MEDIUM" ? "impact-medium" : "impact-low";
+                html += `
+                    <div class="news-item">
+                        <div class="news-title">📢 ${news.title}</div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                            <span class="news-time">⏰ ${news.time} • ${news.currency}</span>
+                            <span class="${impactClass}">⚡ ${news.impact} IMPACT</span>
+                        </div>
+                        <div style="font-size: 11px; color: #888; margin-top: 4px;">Forecast: ${news.forecast} | Previous: ${news.previous}</div>
+                    </div>
+                `;
+                
+                if(diff < timeToNews && diff >= 0 && diff <= 60) {
                     timeToNews = diff;
                     upcomingNews = news;
                 }
             }
         }
         
-        if(upcomingNews && timeToNews <= 60) { // خلال الساعة القادمة
-            activeNews = upcomingNews;
+        if(html === "") html = '<div style="padding: 20px; text-align: center;">No major news today</div>';
+        document.getElementById("news-list").innerHTML = html;
+        document.getElementById("news-refresh").innerHTML = `updated ${new Date().toLocaleTimeString()}`;
+        
+        // Block trading during high impact news
+        if(upcomingNews && upcomingNews.impact === "HIGH" && timeToNews <= 30) {
             tradingBlocked = true;
-            showNewsAlert(upcomingNews, timeToNews);
-        } else if(activeNews && timeToNews > 60) {
-            activeNews = null;
+            document.getElementById("status-text").innerHTML = "⚠️ HIGH IMPACT NEWS INCOMING - TRADING BLOCKED ⚠️";
+            document.getElementById("status-text").style.color = "var(--danger)";
+        } else {
             tradingBlocked = false;
-            document.getElementById("news-alert").classList.add("hidden");
+            document.getElementById("status-text").innerHTML = "[ AWAITING CHART UPLOAD ]";
+            document.getElementById("status-text").style.color = "#888";
         }
     }
-    
-    function showNewsAlert(news, minutesLeft) {
-        const alertDiv = document.getElementById("news-alert");
-        const detailsDiv = document.getElementById("news-details");
-        const countdownSpan = document.getElementById("news-countdown");
-        const warningDiv = document.getElementById("news-warning");
-        
-        alertDiv.classList.remove("hidden");
-        
-        const impactColor = news.impact === "HIGH" ? "#ff4444" : news.impact === "MEDIUM" ? "#ffaa00" : "#00ff88";
-        
-        detailsDiv.innerHTML = `
-            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                <span>🇺🇸 ${news.currency}</span>
-                <span style="color: ${impactColor}; font-weight: bold;">⚡ ${news.impact}</span>
-            </div>
-            <div style="font-size: 16px; font-weight: bold;">📢 ${news.title}</div>
-            <div style="font-size: 12px; color: #888; margin-top: 5px;">التوقع: ${news.forecast} | السابق: ${news.previous}</div>
-        `;
-        
-        warningDiv.innerHTML = `⚠️ تحذير: التداول محظور ${minutesLeft} دقيقة قبل الخبر! ⚠️`;
-        
-        // تحديث العد التنازلي
-        let remaining = minutesLeft * 60;
-        const countdownInterval = setInterval(() => {
-            if(remaining <= 0) {
-                clearInterval(countdownInterval);
-                alertDiv.classList.add("hidden");
-                tradingBlocked = false;
-                return;
-            }
-            const mins = Math.floor(remaining / 60);
-            const secs = remaining % 60;
-            countdownSpan.innerText = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-            remaining--;
-        }, 1000);
-    }
+
+    // ==================== AI PROMPTS (ENGLISH - OPTIMIZED) ====================
+    const PROMPT_HUNT = `You are HCG-TRADER V18.5 TITAN, a world-class technical analyst specializing in Smart Money Concepts (SMC), Price Action, and Institutional Order Flow.
+
+Analyze the uploaded chart image and provide a HIGH-PROBABILITY trading setup.
+
+CRITICAL RULES:
+1. ONLY generate BUY/SELL if you see CLEAR confluence between:
+   - Fair Value Gaps / Order Blocks
+   - Liquidity Sweeps
+   - Momentum confirmation (ADX > 25, MFI extreme)
+   - Clean price action pattern (engulfing, pin bar, break of structure)
+2. If the setup is NOT clear or lacks confluence, output SIGNAL: "WAIT" and explain WHY you are waiting.
+3. If you spot a potential TRAP (false breakout, liquidity hunt, stop hunt), output SIGNAL: "TRAP" with detailed warning.
+
+Return ONLY valid JSON:
+{
+  "asset": "Asset name",
+  "trend": "Bullish/Bearish/Neutral",
+  "signal": "BUY/SELL/WAIT/TRAP",
+  "confidence_score": 0-100,
+  "entry_point": "price level",
+  "stop_loss": "price level",
+  "take_profit_1": "price level",
+  "take_profit_2": "price level",
+  "take_profit_3": "price level",
+  "trap_zones": "Describe trap zones if signal is TRAP, else 'N/A'",
+  "trap_message": "If signal is TRAP, explain why this is a trap and what to avoid",
+  "reasoning": "Detailed technical reasoning"
+}`;
+
+    const PROMPT_MANAGE = `You are HCG-TRADER V18.5 TITAN, a professional trade manager.
+
+Analyze the chart image showing an ACTIVE trade (look for entry line, stop loss, take profit levels).
+Determine the optimal action based on current price structure, momentum, and liquidity zones.
+
+Actions:
+- HOLD: Let the trade run, structure intact
+- MOVE_BE: Move stop loss to breakeven (protect profits)
+- CLOSE_NOW: High risk of reversal, exit immediately
+
+Return ONLY valid JSON:
+{
+  "trade_status": "Floating Profit / Drawdown / Breakeven",
+  "action": "HOLD/MOVE_BE/CLOSE_NOW",
+  "risk_level": "High/Medium/Low",
+  "new_sl": "New stop loss level or 'Keep Current'",
+  "reasoning": "Detailed reasoning for the action"
+}`;
 
     // ==================== STATS MANAGEMENT ====================
     function loadStats() {
-        const savedStats = JSON.parse(localStorage.getItem("hcg_stats"));
-        if (savedStats && savedStats.date === new Date().toDateString()) { 
-            stats = savedStats; 
-        } else {
-            saveStats();
-        }
+        const saved = JSON.parse(localStorage.getItem("hcg_stats"));
+        if (saved && saved.date === new Date().toDateString()) stats = saved;
+        else saveStats();
         updateStatsUI();
     }
-
-    function saveStats() { 
-        localStorage.setItem("hcg_stats", JSON.stringify(stats)); 
-    }
-
-    function logTrade(result) {
-        if(tradingBlocked) {
-            alert("⚠️ لا يمكن تسجيل صفقات أثناء الأخبار الهامة!");
-            return;
-        }
-        
-        if(result === 'WIN') stats.wins++; 
-        else stats.losses++;
-        saveStats();
-        updateStatsUI();
-        
-        document.getElementById('results-hunt').classList.add('hidden');
-        document.getElementById('results-manage').classList.add('hidden');
-        document.getElementById('image-preview').style.display = 'none';
-        document.getElementById('btn-scan').classList.add('hidden');
-        
-        document.getElementById('status-text').innerHTML = `[ ✅ تم تسجيل ${result === 'WIN' ? 'ربح' : 'خسارة'} ]`;
-    }
-
+    function saveStats() { localStorage.setItem("hcg_stats", JSON.stringify(stats)); }
     function updateStatsUI() {
         document.getElementById("win-count").innerText = stats.wins;
         document.getElementById("loss-count").innerText = stats.losses;
@@ -500,136 +468,142 @@
         const winRate = total > 0 ? Math.round((stats.wins / total) * 100) : 0;
         document.getElementById("win-rate").innerText = winRate;
         
-        // 3-Strike Rule
         if (stats.losses >= 3) {
-            const card = document.getElementById("upload-card");
-            const statsBar = document.getElementById("stats-bar");
-            card.classList.add('hidden');
-            statsBar.classList.add('circuit-locked');
-            statsBar.innerHTML = `<span style="color:white; font-size:1.2em; text-align:center; width:100%;">🚨 CIRCUIT BREAKER - توقف التداول لليوم 🚨</span>`;
+            document.getElementById("upload-card").classList.add("hidden");
+            document.getElementById("stats-bar").classList.add("circuit-locked");
+            document.getElementById("stats-bar").innerHTML = `<span style="color:white; text-align:center; width:100%;">🚨 CIRCUIT BREAKER - 3 LOSSES, TRADING SUSPENDED 🚨</span>`;
         }
+    }
+    
+    function logTrade(result) {
+        if(tradingBlocked) { alert("⚠️ Trading blocked due to high impact news!"); return; }
+        if(result === 'WIN') stats.wins++;
+        else stats.losses++;
+        saveStats();
+        updateStatsUI();
+        document.getElementById('results-hunt').classList.add('hidden');
+        document.getElementById('results-manage').classList.add('hidden');
+        document.getElementById('image-preview').style.display = 'none';
+        document.getElementById('btn-scan').classList.add('hidden');
+        document.getElementById('status-text').innerHTML = `[ ${result === 'WIN' ? 'WIN' : 'LOSS'} RECORDED ]`;
     }
 
     // ==================== IMAGE PROCESSING ====================
     function setMode(mode) {
         currentMode = mode;
-        document.getElementById('tab-hunt').classList.remove('active');
-        document.getElementById('tab-manage').classList.remove('active');
-        if(mode === 'HUNT') document.getElementById('tab-hunt').classList.add('active');
-        else document.getElementById('tab-manage').classList.add('active');
-        
+        document.getElementById('tab-hunt').classList.toggle('active', mode === 'HUNT');
+        document.getElementById('tab-manage').classList.toggle('active', mode === 'MANAGE');
         document.getElementById('results-hunt').classList.add('hidden');
         document.getElementById('results-manage').classList.add('hidden');
-        document.getElementById('status-text').innerHTML = `[ 🔍 ${mode} MODE - انتظر رفع الصورة ]`;
+        document.getElementById('status-text').innerHTML = `[ ${mode} MODE - UPLOAD CHART ]`;
     }
 
     function processImage(event) {
         const file = event.target.files[0];
         if(!file) return;
-        
-        document.getElementById('status-text').innerHTML = "[ 📸 جاري معالجة الصورة... ]";
         const reader = new FileReader();
-        
         reader.onload = function(e) {
             const img = new Image();
             img.onload = function() {
                 const canvas = document.createElement('canvas');
                 const MAX_WIDTH = 1024;
-                const scale = MAX_WIDTH / img.width;
                 canvas.width = MAX_WIDTH;
-                canvas.height = img.height * scale;
+                canvas.height = img.height * (MAX_WIDTH / img.width);
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 base64Image = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
-                
                 document.getElementById('image-preview').src = e.target.result;
                 document.getElementById('image-preview').style.display = 'block';
                 document.getElementById('btn-scan').classList.remove("hidden");
-                document.getElementById('status-text').innerHTML = "[ ✅ الصورة جاهزة للتحليل ]";
-            }
+                document.getElementById('status-text').innerHTML = "[ IMAGE LOADED - READY FOR ANALYSIS ]";
+            };
             img.src = e.target.result;
-        }
+        };
         reader.readAsDataURL(file);
     }
 
-    // ==================== GEMINI API CALL ====================
     async function executeScan() {
         if(!base64Image) return;
-        if(tradingBlocked) {
-            alert("⚠️ التداول محظور بسبب أخبار هامة قادمة!");
-            return;
-        }
+        if(tradingBlocked) { alert("⚠️ Trading blocked during high impact news!"); return; }
         
         const apiKey = localStorage.getItem("hcg_api_key");
-        if(!apiKey) { alert("مفتاح API مفقود"); return; }
-        
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+        if(!apiKey) { alert("API Key missing"); return; }
         
         document.getElementById('btn-scan').classList.add("hidden");
         document.getElementById('loading-scanner').style.display = "block";
-        document.getElementById('status-text').innerHTML = "[ 🤖 جاري التحليل بالذكاء الاصطناعي... ]";
+        document.getElementById('status-text').innerHTML = "[ AI ANALYSIS IN PROGRESS... ]";
         
-        document.getElementById('results-hunt').classList.add('hidden');
-        document.getElementById('results-manage').classList.add('hidden');
-
         const activePrompt = currentMode === "HUNT" ? PROMPT_HUNT : PROMPT_MANAGE;
-        const payload = { 
-            "contents": [{ 
-                "parts": [ 
-                    {"text": activePrompt}, 
-                    {"inline_data": {"mime_type": "image/jpeg", "data": base64Image}}
-                ] 
-            }] 
-        };
-
+        const payload = { contents: [{ parts: [{ text: activePrompt }, { inline_data: { mime_type: "image/jpeg", data: base64Image } }] }] };
+        
         try {
-            const response = await fetch(url, { 
-                method: "POST", 
-                headers: { "Content-Type": "application/json" }, 
-                body: JSON.stringify(payload) 
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
             });
-            
             if(!response.ok) throw new Error(`API Error: ${response.status}`);
-            
             const data = await response.json();
             let resultText = data.candidates[0].content.parts[0].text;
             resultText = resultText.replace(/```json/gi, '').replace(/```/g, '').trim();
             const parsed = JSON.parse(resultText);
-
+            
             if (currentMode === "HUNT") {
                 document.getElementById('results-hunt').classList.remove("hidden");
                 const sig = document.getElementById('hunt-signal');
                 sig.innerText = parsed.signal;
                 sig.className = "signal-header " + parsed.signal;
                 
-                document.getElementById('hunt-reason').innerText = parsed.reasoning || "تحليل فني";
-                document.getElementById('hunt-asset').innerText = `${parsed.asset} | ${parsed.trend}`;
+                // TRAP Alert
+                if(parsed.signal === "TRAP") {
+                    document.getElementById('hunt-trap-alert').classList.remove("hidden");
+                    document.getElementById('trap-message').innerHTML = parsed.trap_message || parsed.reasoning;
+                } else {
+                    document.getElementById('hunt-trap-alert').classList.add("hidden");
+                }
+                
+                document.getElementById('hunt-reason').innerHTML = parsed.reasoning || "Technical analysis";
+                document.getElementById('hunt-asset').innerHTML = `${parsed.asset} | ${parsed.trend}`;
                 document.getElementById('hunt-conf').innerHTML = `${parsed.confidence_score}%`;
-                document.getElementById('hunt-entry').innerText = parsed.entry_point;
-                document.getElementById('hunt-sl').innerText = parsed.stop_loss;
-                document.getElementById('hunt-traps').innerText = parsed.trap_zones || "لا توجد مناطق محددة";
+                document.getElementById('hunt-entry').innerHTML = parsed.entry_point;
+                document.getElementById('hunt-sl').innerHTML = parsed.stop_loss;
+                document.getElementById('hunt-traps').innerHTML = parsed.trap_zones || "No specific zones";
             } else {
                 document.getElementById('results-manage').classList.remove("hidden");
                 const act = document.getElementById('manage-action');
                 act.innerText = parsed.action;
                 act.className = "signal-header " + parsed.action;
-                
-                document.getElementById('manage-reason').innerText = parsed.reasoning;
-                document.getElementById('manage-status').innerText = parsed.trade_status;
+                document.getElementById('manage-reason').innerHTML = parsed.reasoning;
+                document.getElementById('manage-status').innerHTML = parsed.trade_status;
                 document.getElementById('manage-risk').innerHTML = parsed.risk_level;
-                document.getElementById('manage-new-sl').innerText = parsed.new_sl;
+                document.getElementById('manage-new-sl').innerHTML = parsed.new_sl;
             }
-
-            document.getElementById('status-text').innerHTML = "[ ✅ التحليل مكتمل ]";
+            document.getElementById('status-text').innerHTML = "[ ANALYSIS COMPLETE ]";
             document.getElementById('status-text').style.color = "var(--success)";
-
         } catch (error) {
             console.error(error);
-            document.getElementById('status-text').innerHTML = "[ ❌ خطأ في التحليل ]";
+            document.getElementById('status-text').innerHTML = "[ ERROR IN ANALYSIS ]";
             document.getElementById('status-text').style.color = "var(--danger)";
         } finally {
             document.getElementById('loading-scanner').style.display = "none";
             document.getElementById('btn-scan').classList.remove("hidden");
+        }
+    }
+
+    // ==================== INITIALIZATION ====================
+    function saveKey() {
+        const key = document.getElementById("api-key").value.trim();
+        if(key) { localStorage.setItem("hcg_api_key", key); location.reload(); }
+    }
+    function resetApp() { localStorage.removeItem("hcg_api_key"); localStorage.removeItem("hcg_stats"); location.reload(); }
+
+    window.onload = function() {
+        if(localStorage.getItem("hcg_api_key")) {
+            document.getElementById("setup-screen").classList.add("hidden");
+            document.getElementById("main-screen").classList.remove("hidden");
+            loadStats();
+            updateMarketPrices();
+            fetchNews();
+            marketInterval = setInterval(updateMarketPrices, 30000);
+            newsInterval = setInterval(fetchNews, 60000);
         }
     }
 </script>
