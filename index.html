@@ -9,57 +9,30 @@
     <title>HCG-TRADER V18 PRO</title>
     <style>
         :root {
-            --bg-color: #080c10;
-            --panel-bg: #121820;
-            --primary: #00ffcc;
-            --success: #00ff44;
-            --danger: #ff2a2a;
-            --warning: #ffaa00;
-            --text-main: #e0e0e0;
-            --border: #1f2b38;
+            --bg-color: #080c10; --panel-bg: #121820; --primary: #00ffcc;
+            --success: #00ff44; --danger: #ff2a2a; --warning: #ffaa00;
+            --text-main: #e0e0e0; --border: #1f2b38; --purple: #aa00ff; --pink: #ff00aa;
         }
-        body {
-            background-color: var(--bg-color); color: var(--text-main); font-family: 'Courier New', monospace;
-            margin: 0; padding: 15px; text-align: center;
-        }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: 'Courier New', monospace; margin: 0; padding: 15px; text-align: center; }
         h2 { color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 10px; font-size: 1.5em; text-transform: uppercase; letter-spacing: 2px;}
-        .card {
-            background: var(--panel-bg); border: 1px solid var(--border); border-radius: 8px;
-            padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        input[type="password"] {
-            width: 90%; padding: 12px; background: #000; border: 1px solid var(--primary); color: var(--primary);
-            margin-bottom: 15px; border-radius: 4px; font-family: monospace; text-align: center;
-        }
-        .btn {
-            width: 100%; padding: 15px; font-weight: bold; font-family: 'Courier New', monospace; font-size: 1em;
-            border: none; border-radius: 5px; cursor: pointer; margin-bottom: 12px; text-transform: uppercase;
-            transition: 0.3s;
-        }
+        .card { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        input[type="password"] { width: 90%; padding: 12px; background: #000; border: 1px solid var(--primary); color: var(--primary); margin-bottom: 15px; border-radius: 4px; font-family: monospace; text-align: center; }
+        .btn { width: 100%; padding: 15px; font-weight: bold; font-family: 'Courier New', monospace; font-size: 1em; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 12px; text-transform: uppercase; transition: 0.3s; }
         .btn:active { transform: scale(0.98); }
         .btn-green { background: linear-gradient(90deg, #006600, #00aa00); color: white; }
         .btn-blue { background: linear-gradient(90deg, #003366, #0055aa); color: white; }
         .btn-red { background: linear-gradient(90deg, #880000, #dd0000); color: white; box-shadow: 0 0 10px rgba(255,0,0,0.3); }
         .btn-hollow { background: transparent; border: 1px solid var(--text-main); color: var(--text-main); padding: 10px;}
         
-        .grid-container {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; text-align: left;
-        }
-        .data-box {
-            background: #0d1218; padding: 10px; border-left: 3px solid var(--primary); border-radius: 4px;
-        }
-        .data-title { font-size: 0.75em; color: #888; text-transform: uppercase; margin-bottom: 5px;}
-        .data-value { font-size: 1.1em; font-weight: bold; }
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; text-align: left; }
+        .data-box { background: #0d1218; padding: 10px; border-left: 3px solid var(--primary); border-radius: 4px; }
+        .data-title { font-size: 0.70em; color: #888; text-transform: uppercase; margin-bottom: 5px;}
+        .data-value { font-size: 1.05em; font-weight: bold; }
         
         #image-preview { width: 100%; border-radius: 5px; border: 1px solid var(--border); margin-top: 10px; display: none; }
         .hidden { display: none; }
         
-        /* تأثير الرادار للتحميل */
-        .scanner {
-            width: 100%; height: 4px; background: var(--primary); margin: 15px 0; border-radius: 2px;
-            animation: scan 1.5s infinite ease-in-out; display: none;
-            box-shadow: 0 0 10px var(--primary);
-        }
+        .scanner { width: 100%; height: 4px; background: var(--primary); margin: 15px 0; border-radius: 2px; animation: scan 1.5s infinite ease-in-out; display: none; box-shadow: 0 0 10px var(--primary); }
         @keyframes scan { 0% { opacity: 0.2; transform: scaleX(0.1); } 50% { opacity: 1; transform: scaleX(1); } 100% { opacity: 0.2; transform: scaleX(0.1); } }
         
         .signal-header { font-size: 2em; margin: 10px 0; font-weight: bold; text-shadow: 0 0 10px rgba(0,0,0,0.5);}
@@ -70,7 +43,6 @@
 
 <div id="setup-screen" class="card">
     <h2>[ SECURITY VAULT ]</h2>
-    <p style="font-size: 0.8em; color: #888;">System Authentication Required</p>
     <input type="password" id="api-key" placeholder="Enter Gemini API Key">
     <button class="btn btn-green" onclick="saveKey()">INITIALIZE SYSTEM</button>
 </div>
@@ -87,7 +59,7 @@
             <button class="btn btn-blue" onclick="document.getElementById('file-camera').click()">📷 CAMERA</button>
         </div>
         
-        <img id="image-preview" src="" alt="Chart">
+        <img id="image-preview" src="">
         <button id="btn-scan" class="btn btn-red hidden" onclick="executeScan()">⚡ INITIATE SCAN</button>
         <div id="loading-scanner" class="scanner"></div>
         <p id="status-text" style="font-size: 0.9em; color: var(--primary);">[ SYSTEM READY ]</p>
@@ -95,15 +67,19 @@
 
     <div id="results-panel" class="card hidden">
         <div id="signal-display" class="signal-header">--</div>
-        <div style="font-size: 0.85em; color: #aaa; margin-bottom: 15px;" id="reasoning-display">Analyzing...</div>
+        <div style="font-size: 0.85em; color: #aaa; margin-bottom: 15px; border-bottom: 1px dashed #333; padding-bottom: 10px;" id="reasoning-display">Analyzing...</div>
         
         <div class="grid-container">
-            <div class="data-box" style="border-color: var(--text-main);"><div class="data-title">Asset / Trend</div><div class="data-value" id="val-asset">--</div></div>
-            <div class="data-box" style="border-color: #00aaff;"><div class="data-title">Entry Point</div><div class="data-value" id="val-entry">--</div></div>
+            <div class="data-box" style="border-color: var(--text-main);"><div class="data-title">Asset/Trend</div><div class="data-value" id="val-asset">--</div></div>
+            <div class="data-box" style="border-color: var(--purple);"><div class="data-title">Confidence</div><div class="data-value" id="val-conf">--</div></div>
+            
+            <div class="data-box" style="border-color: #00aaff;"><div class="data-title">Direct Entry</div><div class="data-value" id="val-entry">--</div></div>
+            <div class="data-box" style="border-color: var(--warning);"><div class="data-title">Wait For Pullback</div><div class="data-value" id="val-pullback">--</div></div>
+            
             <div class="data-box" style="border-color: var(--danger);"><div class="data-title">Stop Loss (SL)</div><div class="data-value" id="val-sl">--</div></div>
-            <div class="data-box" style="border-color: var(--success);"><div class="data-title">Target 1 (TP1)</div><div class="data-value" id="val-tp1">--</div></div>
-            <div class="data-box" style="border-color: var(--success);"><div class="data-title">Target 2 (TP2)</div><div class="data-value" id="val-tp2">--</div></div>
-            <div class="data-box" style="border-color: var(--warning);"><div class="data-title">Spread Status</div><div class="data-value" id="val-spread">--</div></div>
+            <div class="data-box" style="border-color: var(--success);"><div class="data-title">Targets (TP1/TP2)</div><div class="data-value" id="val-tps">--</div></div>
+            
+            <div class="data-box" style="border-color: var(--pink); grid-column: span 2;"><div class="data-title">⚠️ SMC Trap Zones (Liquidity Sweeps)</div><div class="data-value" id="val-traps" style="font-size: 0.85em;">--</div></div>
         </div>
     </div>
     
@@ -111,23 +87,25 @@
 </div>
 
 <script>
-    // النواة العسكرية المطورة للتحليل المالي
     const SYSTEM_PROMPT = `
-    ROLE: You are HCG-TRADER V18 PRO, an elite algorithmic trading AI. Your task is to analyze the provided financial chart and extract highly precise trading variables.
+    ROLE: You are HCG-TRADER V18 PRO, an elite algorithmic trading AI. Analyze the chart using Smart Money Concepts (SMC) and standard indicators.
     RULES: 
-    1. Read indicators carefully (ATR, RSI, ADX, EMAs).
-    2. Assess 'Spread Status' based on current market volatility and time (e.g., 'Normal', 'High Risk', 'News Time').
-    3. Output MUST be ONLY valid JSON format. No conversational text.
+    1. Identify exact Pullback levels if the signal is WAIT.
+    2. Identify Liquidity Trap Zones (fake breakouts/sweeps).
+    3. Assign a Confidence Score (0-100).
+    4. Output MUST be ONLY valid JSON format.
     JSON_SCHEMA: {
       "asset": "String (e.g., XAUUSD, NAS100)",
       "trend": "String (Bullish/Bearish/Ranging)",
       "signal": "BUY or SELL or WAIT",
-      "entry_point": "Float or 'N/A'",
-      "stop_loss": "Float or 'N/A' (Strict calculation based on structure/ATR)",
+      "confidence_score": "Integer",
+      "entry_point": "Float or 'N/A' (For immediate entry)",
+      "pullback_target": "Float or 'N/A' (If WAIT, exact price to enter after correction)",
+      "stop_loss": "Float or 'N/A'",
       "target_1": "Float or 'N/A'",
       "target_2": "Float or 'N/A'",
-      "spread_status": "String (Risk evaluation)",
-      "reasoning": "String (Short technical reason for the decision)"
+      "trap_zones": "String (Identify exact levels of traps/fakeouts, e.g., 'Bull trap above 4440' or 'None')",
+      "reasoning": "String (Short technical reason)"
     }
     `;
 
@@ -149,39 +127,26 @@
         }
     }
 
-    function resetApp() {
-        localStorage.removeItem("hcg_api_key");
-        location.reload();
-    }
+    function resetApp() { localStorage.removeItem("hcg_api_key"); location.reload(); }
 
-    // محرك ضغط الصور الاحترافي
     function processImage(event) {
         const file = event.target.files[0];
         if(!file) return;
-
         document.getElementById('status-text').innerText = "[ COMPRESSING DATA... ]";
-        
         const reader = new FileReader();
         reader.onload = function(e) {
             const img = new Image();
             img.onload = function() {
                 const canvas = document.createElement('canvas');
-                const MAX_WIDTH = 1024; // تصغير الصورة لتسريع التحليل
+                const MAX_WIDTH = 1024; 
                 const scaleSize = MAX_WIDTH / img.width;
-                canvas.width = MAX_WIDTH;
-                canvas.height = img.height * scaleSize;
-                
+                canvas.width = MAX_WIDTH; canvas.height = img.height * scaleSize;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                
-                // تحويل الصورة المضغوطة إلى Base64
                 const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
                 base64Image = compressedDataUrl.split(',')[1];
-                
-                const preview = document.getElementById('image-preview');
-                preview.src = compressedDataUrl;
-                preview.style.display = 'block';
-                
+                document.getElementById('image-preview').src = compressedDataUrl;
+                document.getElementById('image-preview').style.display = 'block';
                 document.getElementById('btn-scan').classList.remove("hidden");
                 document.getElementById('status-text').innerText = "[ DATA LOADED. READY FOR SCAN ]";
             }
@@ -192,42 +157,25 @@
 
     async function executeScan() {
         if(!base64Image) return;
-
         const apiKey = localStorage.getItem("hcg_api_key");
         const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
         
-        // واجهة التحميل
         document.getElementById('btn-scan').classList.add("hidden");
         document.getElementById('loading-scanner').style.display = "block";
-        document.getElementById('status-text').innerText = "[ ANALYZING MARKET STRUCTURE... ]";
+        document.getElementById('status-text').innerText = "[ ANALYZING MARKET STRUCTURE & TRAPS... ]";
         document.getElementById('results-panel').classList.add("hidden");
 
-        const payload = {
-            "contents": [{
-                "parts": [
-                    {"text": SYSTEM_PROMPT},
-                    {"inline_data": {"mime_type": "image/jpeg", "data": base64Image}}
-                ]
-            }]
-        };
+        const payload = { "contents": [{ "parts": [ {"text": SYSTEM_PROMPT}, {"inline_data": {"mime_type": "image/jpeg", "data": base64Image}} ] }] };
 
         try {
-            const response = await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-
+            const response = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
             if(!response.ok) throw new Error("API Authentication or Network Failure");
-
             const data = await response.json();
             let resultText = data.candidates[0].content.parts[0].text;
             
-            // تنظيف صارم للـ JSON من أي شوائب ماركداون
             resultText = resultText.replace(/```json/gi, '').replace(/```/g, '').trim();
             const parsed = JSON.parse(resultText);
 
-            // عرض النتائج في لوحة القيادة
             document.getElementById('results-panel').classList.remove("hidden");
             
             const signalNode = document.getElementById('signal-display');
@@ -236,11 +184,17 @@
 
             document.getElementById('reasoning-display').innerText = "Reason: " + parsed.reasoning;
             document.getElementById('val-asset').innerText = parsed.asset + " | " + parsed.trend;
+            
+            // البيانات الجديدة
+            const confColor = parsed.confidence_score >= 80 ? 'var(--success)' : (parsed.confidence_score >= 60 ? 'var(--warning)' : 'var(--danger)');
+            document.getElementById('val-conf').innerText = parsed.confidence_score + "%";
+            document.getElementById('val-conf').style.color = confColor;
+            
             document.getElementById('val-entry').innerText = parsed.entry_point;
+            document.getElementById('val-pullback').innerText = parsed.pullback_target;
             document.getElementById('val-sl').innerText = parsed.stop_loss;
-            document.getElementById('val-tp1').innerText = parsed.target_1;
-            document.getElementById('val-tp2').innerText = parsed.target_2;
-            document.getElementById('val-spread').innerText = parsed.spread_status;
+            document.getElementById('val-tps').innerText = parsed.target_1 + " / " + parsed.target_2;
+            document.getElementById('val-traps').innerText = parsed.trap_zones;
 
             document.getElementById('status-text').innerText = "[ SCAN COMPLETE ]";
             document.getElementById('status-text').style.color = "var(--success)";
@@ -255,6 +209,5 @@
         }
     }
 </script>
-
 </body>
 </html>
